@@ -25,8 +25,7 @@ class App(tk.Tk):
     def open_page(self, page_name):
         page = self.pages[page_name]
         page.tkraise()
-        
-        
+              
 class HomePage(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
@@ -61,87 +60,111 @@ class MidtermPerformanceTracker(tk.Frame):
         
         tk.Label(self, text="Midterm Performance Tracker").pack()
         tk.Button(self, text="Home", command=lambda:controller.open_page("HomePage")).pack()
-        tk.Button(self, text="Add Course", command=self.open_course_form).pack()
+        tk.Button(self, text="Add Course", command=self.create_course_form_part1).pack()
         tk.Button(self, text="Print Courses as CSV", command=self.export_courses_as_csv).pack()
         
-    def open_course_form(self):
+    def create_course_form_part1(self):
         #creating the frame form to enter the data for the new course
-        course_form = tk.Toplevel(self)
-        course_form.title("Course Information")
-        course_form.grab_set()
+        form = tk.Toplevel(self)
+        form.title("Course Information")
+        form.grab_set()
         
         #adding labels and input fields for the info needed for each course
-        tk.Label(course_form, text="Course Name").pack()
-        course_name = tk.Entry(course_form)
+        tk.Label(form, text="Course Name").pack()
+        course_name = tk.Entry(form)
         course_name.pack()
         
-        tk.Label(course_form, text="Course Code").pack()
-        course_code = tk.Entry(course_form)
+        tk.Label(form, text="Course Code").pack()
+        course_code = tk.Entry(form)
         course_code.pack()
         
-        tk.Label(course_form, text="Final Weightage in Percentage").pack()
-        final_weightage = tk.Entry(course_form)
+        tk.Label(form, text="Final Weightage in Percentage").pack()
+        final_weightage = tk.Entry(form)
         final_weightage.pack()
         
-        tk.Label(course_form, text="Amount of Assignments").pack()
-        num_of_assignments = tk.Entry(course_form)
+        tk.Label(form, text="Amount of Assignments").pack()
+        num_of_assignments = tk.Entry(form)
         num_of_assignments.pack()
         
-        tk.Label(course_form, text="Amount of Coursework Exams").pack()
-        num_of_coursework_exams = tk.Entry(course_form)
+        tk.Label(form, text="Amount of Coursework Exams").pack()
+        num_of_coursework_exams = tk.Entry(form)
         num_of_coursework_exams.pack()
         
-        tk.Button(course_form, text="Next", command=lambda:self.submit_data(
-            course_form = course_form,
-            course_name=str(course_name.get()), 
-            course_code=str(course_code.get()), 
-            final_weightage=float(final_weightage.get()),
-            num_of_assignments=int(num_of_assignments.get()),
-            num_of_coursework_exams=int(num_of_coursework_exams.get()))).pack()
+        def next_form():
+            if float(final_weightage.get()) > 1:
+                final_weightage_accurate_float_value = float(final_weightage.get()) / 100
+                
+            self.create_course_form_part2(str(course_name.get()), str(course_code.get()), final_weightage_accurate_float_value, int(num_of_assignments.get()), int(num_of_coursework_exams.get()))
+            form.destroy()
         
-        tk.Button(course_form, text="Cancel", command=lambda: course_form.destroy()).pack()
+        tk.Button(form, text="Next", command=next_form).pack()
+        tk.Button(form, text="Cancel", command=form.destroy).pack()
         
-    def submit_data(self, course_form, course_name, course_code, final_weightage, num_of_assignments, num_of_coursework_exams):
-        self.create_course(course_name, course_code, final_weightage, num_of_assignments, num_of_coursework_exams)
-        course_form.destroy()
-        
-    def create_course(self, course_name, course_code, final_weightage, num_of_assignments, num_of_coursework_exams):
-        assignments = self.create_assignments(num_of_assignments)
-        coursework_exams = self.create_coursework_exams(num_of_coursework_exams)
-        
-        if final_weightage > 1:
-            final_weightage = final_weightage / 100
-        
-        self.courses[course_code] = {
-            "name": course_name,
-            "course_code": course_code,
-            "final_weightage": final_weightage,
-            "assignments": assignments,
-            "coursework_exams": coursework_exams
-        }
-        
-        course_form = tk.Toplevel(self)
-        course_form.title("Course Information")
-        course_form.grab_set()
+    def create_course_form_part2(self, course_name, course_code, final_weightage, num_of_assignments, num_of_coursework_exams):
+        #creating the form to enter the values and store them in variables
+        form = tk.Toplevel(self)
+        form.title("Course Information")
+        form.grab_set()
         
         assignment_weightages = []
         coursework_exam_weightages = []
         
         for i in range(1, num_of_assignments+1):
-            tk.Label(course_form, text="How much percent of your final grade is Assignment "+ str(i) +" worth?").pack()
-            weightage = tk.Entry(course_form)
+            tk.Label(form, text="How much percent of your final grade is Assignment "+ str(i) +" worth?").pack()
+            weightage = tk.Entry(form)
             weightage.pack()
             
             assignment_weightages.append(weightage)
         
         for i in range(1, num_of_coursework_exams+1):
-            tk.Label(course_form, text="How much percent of your final grade is Coursework Exam "+ str(i) +" worth?").pack()
-            weightage = tk.Entry(course_form)
+            tk.Label(form, text="How much percent of your final grade is Coursework Exam "+ str(i) +" worth?").pack()
+            weightage = tk.Entry(form)
             weightage.pack()
             
             coursework_exam_weightages.append(weightage)
             
-        def end_form():
+        #populating all the assignments and coursework exams of the created course with their relevant weightage values 
+        def submit_form():
+            #initializing all the assignments dictionary for later updates
+            def init_assignments(num_of_assignments):
+                assignments = {}
+            
+                for i in range(1,num_of_assignments+1):
+                    assignments["assignment_" + str(i)] = {
+                        "status": "WAITING",
+                        "score": 0.0,
+                        "weightage": 0.0     
+                    }
+                    
+                return assignments
+            
+            #initializing all the coursework exams dictionary for later updates
+            def init_coursework_exams(num_of_coursework_exams):
+                coursework_exams = {}
+            
+                for i in range(1,num_of_coursework_exams+1):
+                    coursework_exams["coursework_exam_" + str(i)] = {
+                        "status": "WAITING",
+                        "score": 0.0,
+                        "weightage": 0.0     
+                    }
+                    
+                return coursework_exams    
+
+             # initializing variables to use in populating the dictionaries
+            assignments = init_assignments(num_of_assignments)
+            coursework_exams = init_coursework_exams(num_of_coursework_exams)
+            
+            #using variables to populate dictionaries
+            self.courses[course_code] = {
+                "name": course_name,
+                "course_code": course_code,
+                "final_weightage": final_weightage,
+                "assignments": assignments,
+                "coursework_exams": coursework_exams,
+                "goal": 0.5
+            }
+            
             for i in range(1, num_of_assignments+1):
                 weightage = float(assignment_weightages[i-1].get())
                 if weightage > 1:
@@ -156,34 +179,12 @@ class MidtermPerformanceTracker(tk.Frame):
                     
                 self.courses[course_code]["coursework_exams"]["coursework_exam_" + str(i)]["weightage"] = weightage
                 
-            course_form.destroy()
+            form.destroy()
             
-        tk.Button(course_form, text="Submit", command=end_form).pack()
+        #adding to buttons at the end of the form to submit values or exit the form altogether    
+        tk.Button(form, text="Submit", command=submit_form).pack()
+        tk.Button(form, text="Cancel", command=form.destroy).pack()  
         
-    def create_assignments(self, num_of_assignments):
-        assignments = {}
-    
-        for i in range(1,num_of_assignments+1):
-            assignments["assignment_" + str(i)] = {
-                "status": "WAITING",
-                "score": 0.0,
-                "weightage": 0.0     
-            }
-            
-        return assignments
-        
-    def create_coursework_exams(self, num_of_coursework_exams):
-        coursework_exams = {}
-    
-        for i in range(1,num_of_coursework_exams+1):
-            coursework_exams["coursework_exam_" + str(i)] = {
-                "status": "WAITING",
-                "score": 0.0,
-                "weightage": 0.0     
-            }
-            
-        return coursework_exams      
-
     def export_courses_as_csv(self):
         output = io.StringIO()
         writer = csv.writer(output)
@@ -208,8 +209,7 @@ class MidtermPerformanceTracker(tk.Frame):
 
         print(output.getvalue())
         output.close()
-    
-        
+           
 class TertiaryGPATracker(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
