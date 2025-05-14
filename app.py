@@ -184,31 +184,6 @@ class MidtermPerformanceTracker(tk.Frame):
         #adding to buttons at the end of the form to submit values or exit the form altogether    
         tk.Button(form, text="Submit", command=submit_form).pack()
         tk.Button(form, text="Cancel", command=form.destroy).pack()  
-        
-    def export_courses_as_csv(self):
-        output = io.StringIO()
-        writer = csv.writer(output)
-
-        # Write headers
-        writer.writerow(["Course Code", "Course Name", "Final Weightage", "Component Type", "Component Name", "Status", "Score", "Weightage"])
-
-        # Write course data
-        for course_code, data in self.courses.items():
-            course_name = data["name"]
-            final_weightage = data["final_weightage"]
-
-            # Assignments
-            for key, assignment in data["assignments"].items():
-                writer.writerow([course_code, course_name, final_weightage, "Assignment", key,
-                                assignment["status"], assignment["score"], assignment["weightage"]])
-
-            # Coursework Exams
-            for key, exam in data["coursework_exams"].items():
-                writer.writerow([course_code, course_name, final_weightage, "Coursework Exam", key,
-                                exam["status"], exam["score"], exam["weightage"]])
-
-        print(output.getvalue())
-        output.close()
            
 class TertiaryGPATracker(tk.Frame):
     def __init__(self, parent, controller):
