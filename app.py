@@ -38,7 +38,13 @@ class HomePage(tk.Frame):
             
         #creating a section for the Head Text
         div1 = tk.Frame(self)
-        div1.grid(row=0, rowspan=1, column=0, columnspan=5, sticky="nsew")
+        div1.grid(
+            row=0, 
+            rowspan=1, 
+            column=0, 
+            columnspan=5, 
+            sticky="nsew"
+        )
         
         main_label= tk.Label(div1, text="Select Your Desired Tool")
         main_label.pack(fill="both", expand=True)
@@ -56,12 +62,72 @@ class HomePage(tk.Frame):
 class MidtermPerformanceTracker(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
+        self.parent = parent
+        self.controller = controller
         self.courses = {}
         
+        self.refresh_ui()
+    
+    def refresh_ui(self):
+        #going through each widget that is a child of this widget in this case this widget is("self" which is "MidtermPerformanceTracker(tk.Frame)")
+        for widget in self.winfo_children():
+            widget.destroy()
+            
         tk.Label(self, text="Midterm Performance Tracker").pack()
-        tk.Button(self, text="Home", command=lambda:controller.open_page("HomePage")).pack()
+        tk.Button(self, text="Home", command=lambda:self.controller.open_page("HomePage")).pack()
         tk.Button(self, text="Add Course", command=self.create_course_form_part1).pack()
-        tk.Button(self, text="Print Courses as CSV", command=self.export_courses_as_csv).pack()
+        
+        added_courses_div = tk.Frame(self, pady=20)
+        added_courses_div.pack(fill="x")
+        
+        
+        for course in self.courses.values():
+            course_div = tk.Frame(
+                added_courses_div,
+                borderwidth=2,
+                relief="solid",  # Needed to actually show the border
+                highlightbackground="black",  # Sets border color
+                # highlightthickness=2,         # Makes the border thickness visible
+                padx=30,
+                pady=10
+            )
+            course_div.pack()
+        
+            course_title_div = tk.Frame(course_div)
+            course_title_div.pack()
+            tk.Label(course_title_div, text=str(course["name"])).pack(side="left")
+            tk.Button(course_title_div, text="Track Goal").pack(side="left") 
+            
+            course_performance_div = tk.Frame(course_div)
+            course_performance_div.pack()
+            
+            for assignment in course["assignments"].values():
+                assignment_div = tk.Frame(course_performance_div)
+                assignment_div.pack(side="left")
+                
+                assignment_title_div = tk.Frame(assignment_div)
+                assignment_title_div.pack()
+                tk.Label(assignment_title_div, text=str(assignment["name"])).pack()
+                
+                assignment_score_div = tk.Frame(assignment_div)
+                assignment_score_div.pack()
+                score = tk.Entry(assignment_score_div)
+                score.pack()
+                score.insert(0,str(assignment["score"]))
+                
+            for coursework in course["coursework_exams"].values():
+                coursework_div = tk.Frame(course_performance_div)
+                coursework_div.pack(side="left")
+                
+                coursework_title_div = tk.Frame(coursework_div)
+                coursework_title_div.pack()
+                tk.Label(coursework_title_div, text=str(coursework["name"])).pack()
+                
+                coursework_score_div = tk.Frame(coursework_div)
+                coursework_score_div.pack()
+                score = tk.Entry(coursework_score_div)
+                score.pack()
+                score.insert(0,str(coursework["score"]))
         
     def create_course_form_part1(self):
         #creating the frame form to enter the data for the new course
@@ -131,6 +197,7 @@ class MidtermPerformanceTracker(tk.Frame):
             
                 for i in range(1,num_of_assignments+1):
                     assignments["assignment_" + str(i)] = {
+                        "name": "assignment " + str(i),
                         "status": "WAITING",
                         "score": 0.0,
                         "weightage": 0.0     
@@ -144,6 +211,7 @@ class MidtermPerformanceTracker(tk.Frame):
             
                 for i in range(1,num_of_coursework_exams+1):
                     coursework_exams["coursework_exam_" + str(i)] = {
+                        "name": "coursework exam " + str(i),
                         "status": "WAITING",
                         "score": 0.0,
                         "weightage": 0.0     
@@ -180,6 +248,9 @@ class MidtermPerformanceTracker(tk.Frame):
                 self.courses[course_code]["coursework_exams"]["coursework_exam_" + str(i)]["weightage"] = weightage
                 
             form.destroy()
+            
+            #my attempt to update the main page to always have an up to date list of courses after adding new courses
+            self.refresh_ui()
             
         #adding to buttons at the end of the form to submit values or exit the form altogether    
         tk.Button(form, text="Submit", command=submit_form).pack()
