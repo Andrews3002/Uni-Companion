@@ -79,8 +79,7 @@ class MidtermPerformanceTracker(tk.Frame):
         
         added_courses_div = tk.Frame(self, pady=20)
         added_courses_div.pack(fill="x")
-        
-        
+          
         for course in self.courses.values():
             course_div = tk.Frame(
                 added_courses_div,
@@ -96,7 +95,12 @@ class MidtermPerformanceTracker(tk.Frame):
             course_title_div = tk.Frame(course_div)
             course_title_div.pack()
             tk.Label(course_title_div, text=str(course["name"])).pack(side="left")
-            tk.Button(course_title_div, text="Track Goal").pack(side="left") 
+            tk.Button(course_title_div, text="Track Goal", command=lambda:open_goal_tracker_page(course)).pack(side="left") 
+            
+            def open_goal_tracker_page(course):
+                page = GoalTrackerPage(parent=self.parent, course=course)
+                page.grid(row=0, column=0, sticky="nsew")
+                page.tkraise()
             
             course_performance_div = tk.Frame(course_div)
             course_performance_div.pack()
@@ -140,9 +144,9 @@ class MidtermPerformanceTracker(tk.Frame):
         course_name = tk.Entry(form)
         course_name.pack()
         
-        tk.Label(form, text="Course Code").pack()
-        course_code = tk.Entry(form)
-        course_code.pack()
+        tk.Label(form, text="Course ID").pack()
+        course_id = tk.Entry(form)
+        course_id.pack()
         
         tk.Label(form, text="Final Weightage in Percentage").pack()
         final_weightage = tk.Entry(form)
@@ -160,13 +164,13 @@ class MidtermPerformanceTracker(tk.Frame):
             if float(final_weightage.get()) > 1:
                 final_weightage_accurate_float_value = float(final_weightage.get()) / 100
                 
-            self.create_course_form_part2(str(course_name.get()), str(course_code.get()), final_weightage_accurate_float_value, int(num_of_assignments.get()), int(num_of_coursework_exams.get()))
+            self.create_course_form_part2(str(course_name.get()), str(course_id.get()), final_weightage_accurate_float_value, int(num_of_assignments.get()), int(num_of_coursework_exams.get()))
             form.destroy()
         
         tk.Button(form, text="Next", command=next_form).pack()
         tk.Button(form, text="Cancel", command=form.destroy).pack()
         
-    def create_course_form_part2(self, course_name, course_code, final_weightage, num_of_assignments, num_of_coursework_exams):
+    def create_course_form_part2(self, course_name, course_id, final_weightage, num_of_assignments, num_of_coursework_exams):
         #creating the form to enter the values and store them in variables
         form = tk.Toplevel(self)
         form.title("Course Information")
@@ -224,9 +228,9 @@ class MidtermPerformanceTracker(tk.Frame):
             coursework_exams = init_coursework_exams(num_of_coursework_exams)
             
             #using variables to populate dictionaries
-            self.courses[course_code] = {
+            self.courses[course_id] = {
                 "name": course_name,
-                "course_code": course_code,
+                "id": course_id,
                 "final_weightage": final_weightage,
                 "assignments": assignments,
                 "coursework_exams": coursework_exams,
@@ -238,14 +242,14 @@ class MidtermPerformanceTracker(tk.Frame):
                 if weightage > 1:
                     weightage = weightage / 100
                     
-                self.courses[course_code]["assignments"]["assignment_"+str(i)]["weightage"] = weightage
+                self.courses[course_id]["assignments"]["assignment_"+str(i)]["weightage"] = weightage
             
             for i in range(1,num_of_coursework_exams+1):
                 weightage = float(coursework_exam_weightages[i-1].get())
                 if weightage > 1:
                     weightage = weightage / 100
                     
-                self.courses[course_code]["coursework_exams"]["coursework_exam_" + str(i)]["weightage"] = weightage
+                self.courses[course_id]["coursework_exams"]["coursework_exam_" + str(i)]["weightage"] = weightage
                 
             form.destroy()
             
@@ -255,7 +259,17 @@ class MidtermPerformanceTracker(tk.Frame):
         #adding to buttons at the end of the form to submit values or exit the form altogether    
         tk.Button(form, text="Submit", command=submit_form).pack()
         tk.Button(form, text="Cancel", command=form.destroy).pack()  
-           
+
+class GoalTrackerPage(tk.Frame):
+    def __init__(self, parent, course):
+        super().__init__(parent)
+        self.parent = parent
+        self.course = course
+        self.refresh_gui()
+        
+    def refresh_gui(self):
+        tk.Label(self, text=str(self.course["name"])).pack()
+             
 class TertiaryGPATracker(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
