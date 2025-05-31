@@ -59,12 +59,61 @@ class HomePage(tk.Frame):
         tertiary_gpa_tracker_button = tk.Button(div2, text="Tertiary GPA Tracker", command=lambda: controller.open_page("TertiaryGPATracker"), padx=230)
         tertiary_gpa_tracker_button.pack(side="left", padx=100, fill="y", expand=True)
         
+# Midterm Performance Tracker App
 class MidtermPerformanceTracker(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.parent = parent
         self.controller = controller
         self.courses = {}
+        
+        if self.courses == {}:
+            assignments = {}
+            coursework_exams = {}
+            
+            assignments["assignment_1"] = {
+                "name": "assignment 1",
+                "status": "GRADED",
+                "score": 0.042,
+                "weightage": 0.06     
+            }
+            
+            assignments["assignment_2"] = {
+                "name": "assignment 2",
+                "status": "GRADED",
+                "score": 0.07,
+                "weightage": 0.07     
+            }
+            
+            assignments["assignment_3"] = {
+                "name": "assignment 3",
+                "status": "WAITING",
+                "score": 0.0,
+                "weightage": 0.07     
+            }
+                    
+            coursework_exams["coursework_exam_1"] = {
+                "name": "coursework exam 1",
+                "status": "GRADED",
+                "score": 0.0,
+                "weightage": 0.15     
+            }
+            
+            coursework_exams["coursework_exam_2"] = {
+                "name": "coursework exam 2",
+                "status": "WAITING",
+                "score": 0.0,
+                "weightage": 0.15     
+            }
+            
+            self.courses["MATH101"] = {
+                "name": "Mathematics",
+                "id": "MATH101",
+                "final_weightage": 0.5,
+                "assignments": assignments,
+                "coursework_exams": coursework_exams,
+                "goal": 0.5
+            }
         
         self.refresh_ui()
     
@@ -88,7 +137,7 @@ class MidtermPerformanceTracker(tk.Frame):
                 highlightbackground="black",  # Sets border color
                 # highlightthickness=2,         # Makes the border thickness visible
                 padx=30,
-                pady=10
+                pady=30
             )
             course_div.pack()
         
@@ -98,7 +147,7 @@ class MidtermPerformanceTracker(tk.Frame):
             tk.Button(course_title_div, text="Track Goal", command=lambda:open_goal_tracker_page(course)).pack(side="left") 
             
             def open_goal_tracker_page(course):
-                page = GoalTrackerPage(parent=self.parent, course=course)
+                page = GoalTrackerPage(parent=self.parent, course=course, controller=self.controller)
                 page.grid(row=0, column=0, sticky="nsew")
                 page.tkraise()
             
@@ -115,9 +164,9 @@ class MidtermPerformanceTracker(tk.Frame):
                 
                 assignment_score_div = tk.Frame(assignment_div)
                 assignment_score_div.pack()
-                score = tk.Entry(assignment_score_div)
+                score = tk.Label(assignment_score_div, text=str(int(assignment["score"]*100))+"%")
                 score.pack()
-                score.insert(0,str(assignment["score"]))
+                tk.Button(assignment_score_div, text="Update").pack()
                 
             for coursework in course["coursework_exams"].values():
                 coursework_div = tk.Frame(course_performance_div)
@@ -129,9 +178,9 @@ class MidtermPerformanceTracker(tk.Frame):
                 
                 coursework_score_div = tk.Frame(coursework_div)
                 coursework_score_div.pack()
-                score = tk.Entry(coursework_score_div)
+                score = tk.Label(coursework_score_div, text=str(int(coursework["score"]*100))+"%")
                 score.pack()
-                score.insert(0,str(coursework["score"]))
+                tk.Button(coursework_score_div, text="Update").pack()
         
     def create_course_form_part1(self):
         #creating the frame form to enter the data for the new course
@@ -253,7 +302,7 @@ class MidtermPerformanceTracker(tk.Frame):
                 
             form.destroy()
             
-            #my attempt to update the main page to always have an up to date list of courses after adding new courses
+            #updating the main page to always have an up to date list of courses after adding new courses
             self.refresh_ui()
             
         #adding to buttons at the end of the form to submit values or exit the form altogether    
@@ -261,15 +310,98 @@ class MidtermPerformanceTracker(tk.Frame):
         tk.Button(form, text="Cancel", command=form.destroy).pack()  
 
 class GoalTrackerPage(tk.Frame):
-    def __init__(self, parent, course):
+    def __init__(self, parent, controller, course):
         super().__init__(parent)
         self.parent = parent
         self.course = course
+        self.controller = controller
         self.refresh_gui()
         
     def refresh_gui(self):
         tk.Label(self, text=str(self.course["name"])).pack()
-             
+        tk.Label(self, text="Your goal for this course is to get "+str(self.course["goal"]*100)+"%").pack()
+        tk.Button(self, text="Edit Goal").pack()
+        tk.Button(self, text="Back", command=lambda:self.controller.open_page("MidtermPerformanceTracker")).pack()
+        
+        goal = self.course["goal"]*100
+        score_sum = 0
+        goal_remainder = goal
+        
+        total = 100
+        weightage_sum = 0
+        total_remainder = total
+        
+        required_score_sum=0
+        
+        assessments_div = tk.Frame(self)
+        assessments_div.pack()
+        
+        for assignment in self.course["assignments"].values():
+            score = assignment["score"]*100
+            weightage = assignment["weightage"]*100
+            
+            if assignment["status"] == "GRADED":
+                score_sum += score
+                weightage_sum += weightage
+                
+        for coursework_exam in self.course["coursework_exams"].values():
+            score = coursework_exam["score"]*100
+            weightage = coursework_exam["weightage"]*100
+            
+            if coursework_exam["status"] == "GRADED":
+                score_sum += score
+                weightage_sum += weightage
+        
+        total_remainder = total - weightage_sum
+        goal_remainder = goal - score_sum
+        
+        for assignment in self.course["assignments"].values():
+            score = assignment["score"]*100
+            weightage = round((assignment["weightage"]*100), 1)
+            
+            if assignment["status"] == "WAITING":
+                required_score = round(((weightage/total_remainder)*goal_remainder), 1)
+                required_score_sum += required_score
+                
+                assessment_div = tk.Frame(assessments_div, pady=20)
+                assessment_div.pack()
+        
+                tk.Label(assessment_div, text=assignment["name"]+": To attain your goal you need to get at least "+str(required_score)+"/"+str(weightage)).pack()
+            
+            else:
+                required_score_sum += assignment["score"]*100
+                assessment_div = tk.Frame(assessments_div, pady=20)
+                assessment_div.pack()
+                
+                tk.Label(assessment_div, text=assignment["name"]+": GRADED").pack()
+            
+        for coursework_exam in self.course["coursework_exams"].values():
+            score = coursework_exam["score"]*100
+            weightage = round((coursework_exam["weightage"]*100), 1)
+            
+            if coursework_exam["status"] == "WAITING":
+                required_score = round(((weightage/total_remainder)*goal_remainder), 1)
+                required_score_sum += required_score
+                
+                assessment_div = tk.Frame(assessments_div, pady=20)
+                assessment_div.pack()
+        
+                tk.Label(assessment_div, text=coursework_exam["name"]+": To attain your goal you need to get at least "+str(required_score)+"/"+str(weightage)).pack()
+            
+            else:
+                required_score_sum += coursework_exam["score"]*100
+                assessment_div = tk.Frame(assessments_div, pady=20)
+                assessment_div.pack()
+                
+                tk.Label(assessment_div, text=coursework_exam["name"]+": GRADED").pack()
+                
+        required_score = round((goal - required_score_sum), 1)
+        assessment_div = tk.Frame(assessments_div, pady=20)
+        assessment_div.pack()
+        
+        tk.Label(assessment_div, text="Final: To attain your goal you need to get at least "+str(required_score)+"/"+str(self.course["final_weightage"]*100)).pack()            
+
+# Tertiary GPA Tracker App
 class TertiaryGPATracker(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
@@ -279,5 +411,4 @@ class TertiaryGPATracker(tk.Frame):
 if __name__ == "__main__":
     app = App()
     app.mainloop()
-
         
