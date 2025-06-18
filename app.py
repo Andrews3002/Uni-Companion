@@ -4,21 +4,15 @@ class App(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title('Uni Companion')
-        self.state("zoomed")
+        # self.state("zoomed")
+        self.after(10, lambda: self.state('zoomed'))
         
         self.content_container = ctk.CTkFrame(self)
-        self.content_container.pack(
-            fill="both",
-            expand="true"
-        )
-        
-        self.content_container.grid_rowconfigure(
-            0,
-            weight=1
-        )
-        self.content_container.grid_columnconfigure(
-            0, 
-            weight=1
+        self.content_container.place(
+            relx=0,
+            rely=0,
+            relwidth=1,
+            relheight=1
         )
         
         self.pages = {}
@@ -29,10 +23,11 @@ class App(ctk.CTk):
                 controller=self
             )
             
-            page.grid(
-                row=0, 
-                column=0, 
-                sticky="nsew"
+            page.place(
+                relx=0,
+                rely=0,
+                relwidth=1, #100% width of the parent
+                relheight=1 #100% height of the parent
             )
             
             self.pages[ClassPage.__name__] = page
@@ -42,37 +37,52 @@ class App(ctk.CTk):
     def open_page(self, page_name):
         page = self.pages[page_name]
         page.tkraise()
-              
+
 class HomePage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         
-        #configuring the grid to make every cell responsive
-        for i in range(0,9):
-            self.grid_rowconfigure(i, weight=1)
-        for i in range(0,4):
-            self.grid_columnconfigure(i, weight=1)
+        heading_div = ctk.CTkFrame(self)
+        heading_div.place(
+            relx=0,
+            rely=0,
+            relheight=0.2,
+            relwidth=1
+        )
         
         main_label= ctk.CTkLabel(
-            self, 
-            text="Select Your Desired Tool",
-            font=("Ariel", 20, "bold")
+            heading_div, 
+            text="Welcome to the Uni Companion App\nSelect Your Desired Tool",
+            font=("Ariel", 50, "bold")
         )
         main_label.pack()
         
-        midterm_performance_tracker_button = ctk.CTkButton(
-            self, 
-            text="Midterm Performance Tracker", 
-            command=lambda: controller.open_page("MidtermPerformanceTracker")
+        content_div = ctk.CTkFrame(self)
+        content_div.place(
+            relx=0,
+            rely=0.2,
+            relheight=0.8,
+            relwidth=1,
         )
-        midterm_performance_tracker_button.pack()
+        
+        midterm_performance_tracker_button = ctk.CTkButton(
+            content_div, 
+            text="Midterm Performance Tracker", 
+            command=lambda: controller.open_page("MidtermPerformanceTracker")   
+        )
+        midterm_performance_tracker_button.pack(
+            side="left",
+        )
         
         tertiary_gpa_tracker_button = ctk.CTkButton(
-            self, 
+            content_div, 
             text="Tertiary GPA Tracker", 
             command=lambda: controller.open_page("TertiaryGPATracker")
         )
-        tertiary_gpa_tracker_button.pack()
+        tertiary_gpa_tracker_button.pack(
+            side="left",
+            anchor="center"
+        )
         
 # Midterm Performance Tracker App
 class MidtermPerformanceTracker(ctk.CTkFrame):
@@ -179,8 +189,11 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
                 
             def update_score(assessment):                    
                 form = ctk.CTkToplevel(self)
-                form.title()
-                # form.grab_set()
+                form.title("Update Score")
+                form.transient(self)
+                form.grab_set()
+                form.focus()
+                form.attributes("-topmost", True)
                 
                 ctk.CTkLabel(
                     form, 
@@ -334,7 +347,10 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
         #creating the CTkFrame form to enter the data for the new course
         form = ctk.CTkToplevel(self)
         form.title("Course Information")
-        # form.grab_set()
+        form.transient(self)
+        form.grab_set()
+        form.focus()
+        form.attributes("-topmost", True)
         
         #adding labels and input fields for the info needed for each course
         ctk.CTkLabel(
@@ -401,7 +417,10 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
         #creating the form to enter the values and store them in variables
         form = ctk.CTkToplevel(self)
         form.title("Course Information")
-        # form.grab_set()
+        form.transient(self)
+        form.grab_set()
+        form.focus()
+        form.attributes("-topmost", True)
         
         scrollable_area = ctk.CTkScrollableFrame(form)
         scrollable_area.pack(
@@ -528,6 +547,11 @@ class GoalTrackerPage(ctk.CTkFrame):
                 self.refresh_gui()
         
             form = ctk.CTkToplevel(self)
+            form.title("Edit Goal")
+            form.transient(self)
+            form.grab_set()
+            form.focus()
+            form.attributes("-topmost", True)
             
             ctk.CTkLabel(
                 form,
