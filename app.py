@@ -53,61 +53,26 @@ class HomePage(tk.Frame):
             self.grid_rowconfigure(i, weight=1)
         for i in range(0,4):
             self.grid_columnconfigure(i, weight=1)
-            
-        #creating a section for the Head Text
-        div1 = tk.Frame(self)
-        div1.grid(
-            row=0, 
-            rowspan=1, 
-            column=0, 
-            columnspan=5, 
-            sticky="nsew"
-        )
         
         main_label= tk.Label(
-            div1, 
+            self, 
             text="Select Your Desired Tool"
         )
-        main_label.pack(
-            fill="both", 
-            expand=True
-        )
-        
-        #creating a second section for the buttons
-        div2 = tk.Frame(self)
-        div2.grid(
-            row=1, 
-            rowspan=7, 
-            column=0, 
-            columnspan=5, 
-            sticky="ns"
-        )
+        main_label.pack()
         
         midterm_performance_tracker_button = tk.Button(
-            div2, 
+            self, 
             text="Midterm Performance Tracker", 
-            command=lambda: controller.open_page("MidtermPerformanceTracker"), 
-            padx=200
+            command=lambda: controller.open_page("MidtermPerformanceTracker")
         )
-        midterm_performance_tracker_button.pack(
-            side="left", 
-            padx=100, 
-            fill="y", 
-            expand=True
-        )
+        midterm_performance_tracker_button.pack()
         
         tertiary_gpa_tracker_button = tk.Button(
-            div2, 
+            self, 
             text="Tertiary GPA Tracker", 
-            command=lambda: controller.open_page("TertiaryGPATracker"), 
-            padx=230
+            command=lambda: controller.open_page("TertiaryGPATracker")
         )
-        tertiary_gpa_tracker_button.pack(
-            side="left", 
-            padx=100, 
-            fill="y", 
-            expand=True
-        )
+        tertiary_gpa_tracker_button.pack()
         
 # Midterm Performance Tracker App
 class MidtermPerformanceTracker(tk.Frame):
