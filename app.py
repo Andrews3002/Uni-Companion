@@ -8,8 +8,8 @@ class App(ctk.CTk):
         
         self.content_container = ctk.CTkFrame(self)
         self.content_container.pack(
-            fill="both", 
-            expand=True
+            fill="both",
+            expand="true"
         )
         
         self.content_container.grid_rowconfigure(
@@ -36,7 +36,8 @@ class App(ctk.CTk):
             )
             
             self.pages[ClassPage.__name__] = page
-            self.open_page("HomePage")
+            
+        self.open_page("HomePage")
         
     def open_page(self, page_name):
         page = self.pages[page_name]
@@ -136,24 +137,30 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
         for widget in self.winfo_children():
             widget.destroy()
             
+        scrollable_area = ctk.CTkScrollableFrame(self)
+        scrollable_area.pack(
+            fill="both",
+            expand="true"
+        )
+        
         ctk.CTkLabel(
-            self, 
+            scrollable_area, 
             text="Midterm Performance Tracker"
         ).pack()
         
         ctk.CTkButton(
-            self, 
+            scrollable_area, 
             text="Home", 
             command=lambda:self.controller.open_page("HomePage")
         ).pack()
         
         ctk.CTkButton(
-            self, 
+            scrollable_area, 
             text="Add Course", 
             command=self.create_course_form_part1
         ).pack()
         
-        added_courses_div = ctk.CTkFrame(self)
+        added_courses_div = ctk.CTkFrame(scrollable_area)
         added_courses_div.pack(fill="x")
           
         for course in self.courses.values():
@@ -396,25 +403,31 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
         form.title("Course Information")
         # form.grab_set()
         
+        scrollable_area = ctk.CTkScrollableFrame(form)
+        scrollable_area.pack(
+            fill="both",
+            expand="true"
+        )
+        
         assignment_weightages = []
         coursework_exam_weightages = []
         
         for i in range(1, num_of_assignments+1):
             ctk.CTkLabel(
-                form, 
+                scrollable_area, 
                 text="How much percent of your final grade is Assignment "+ str(i) +" worth?"
             ).pack()
-            weightage = ctk.CTkEntry(form)
+            weightage = ctk.CTkEntry(scrollable_area)
             weightage.pack()
             
             assignment_weightages.append(weightage)
         
         for i in range(1, num_of_coursework_exams+1):
             ctk.CTkLabel(
-                form, 
+                scrollable_area, 
                 text="How much percent of your final grade is Coursework Exam "+ str(i) +" worth?"
             ).pack()
-            weightage = ctk.CTkEntry(form)
+            weightage = ctk.CTkEntry(scrollable_area)
             weightage.pack()
             
             coursework_exam_weightages.append(weightage)
@@ -484,13 +497,13 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
             
         #adding to buttons at the end of the form to submit values or exit the form altogether    
         ctk.CTkButton(
-            form, 
+            scrollable_area, 
             text="Submit", 
             command=submit_form
         ).pack()
         
         ctk.CTkButton(
-            form, 
+            scrollable_area, 
             text="Cancel", 
             command=form.destroy
         ).pack()  
