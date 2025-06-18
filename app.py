@@ -117,54 +117,6 @@ class MidtermPerformanceTracker(tk.Frame):
         self.controller = controller
         self.courses = {}
         
-        # if self.courses == {}:
-        #     assignments = {}
-        #     coursework_exams = {}
-            
-        #     assignments["assignment_1"] = {
-        #         "name": "assignment 1",
-        #         "status": "WAITING",
-        #         "score": 0.0,
-        #         "weightage": 0.06     
-        #     }
-            
-        #     assignments["assignment_2"] = {
-        #         "name": "assignment 2",
-        #         "status": "WAITING",
-        #         "score": 0.00,
-        #         "weightage": 0.07     
-        #     }
-            
-        #     assignments["assignment_3"] = {
-        #         "name": "assignment 3",
-        #         "status": "WAITING",
-        #         "score": 0.0,
-        #         "weightage": 0.07     
-        #     }
-                    
-        #     coursework_exams["coursework_exam_1"] = {
-        #         "name": "coursework exam 1",
-        #         "status": "WAITING",
-        #         "score": 0.0,
-        #         "weightage": 0.15     
-        #     }
-            
-        #     coursework_exams["coursework_exam_2"] = {
-        #         "name": "coursework exam 2",
-        #         "status": "WAITING",
-        #         "score": 0.0,
-        #         "weightage": 0.15     
-        #     }
-            
-        #     self.courses["MATH101"] = {
-            #     "name": "Mathematics",
-            #     "id": "MATH101",
-            #     "final_weightage": 0.5,
-            #     "assignments": assignments,
-            #     "coursework_exams": coursework_exams,
-            #     "goal": 0.5
-            # }
-        
         self.refresh_ui()
     
     def refresh_ui(self):
@@ -743,4 +695,3 @@ class TertiaryGPATracker(tk.Frame):
 if __name__ == "__main__":
     app = App()
     app.mainloop()
-       
