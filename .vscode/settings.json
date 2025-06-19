@@ -3,6 +3,9 @@
         "columnspan",
         "customtkinter",
         "padx",
+        "relheight",
+        "relwidth",
+        "relx",
         "rowspan",
         "weightage",
         "weightages"
