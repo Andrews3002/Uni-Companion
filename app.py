@@ -5,7 +5,6 @@ class App(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title('Uni Companion')
-        # self.state("zoomed")
         self.after(10, lambda: self.state('zoomed'))
         
         ctk.set_appearance_mode("dark")
