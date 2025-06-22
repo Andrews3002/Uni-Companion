@@ -3,6 +3,7 @@
         "columnspan",
         "customtkinter",
         "padx",
+        "pywinstyles",
         "relheight",
         "relwidth",
         "relx",
