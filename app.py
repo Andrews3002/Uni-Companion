@@ -1,8 +1,7 @@
 import customtkinter as ctk
 from PIL import Image
 
-
-#Courses Page Change
+#Home Page change
 
 class App(ctk.CTk):
     def __init__(self):
