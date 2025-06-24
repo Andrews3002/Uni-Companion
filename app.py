@@ -202,31 +202,65 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
         for widget in self.winfo_children():
             widget.destroy()
             
-        scrollable_area = ctk.CTkScrollableFrame(self)
-        scrollable_area.pack(
-            fill = "both",
-            expand = "true"
+        toolbar_frame = ctk.CTkFrame(self)
+        toolbar_frame.place(
+            relx = 0,
+            rely = 0,
+            relwidth = 0.2,
+            relheight = 1
         )
         
-        ctk.CTkLabel(
-            scrollable_area, 
-            text = "Midterm Performance Tracker"
-        ).pack()
+        toolbarLogo_frame = ctk.CTkFrame(toolbar_frame)
+        toolbarLogo_frame.place(
+            relx = 0,
+            rely = 0,
+            relwidth = 1,
+            relheight = 0.3
+        )
         
-        ctk.CTkButton(
-            scrollable_area, 
-            text = "Home", 
+        toolbarContent_frame = ctk.CTkFrame(toolbar_frame)
+        toolbarContent_frame.place(
+            relx = 0,
+            rely = 0.3,
+            relwidth = 1,
+            relheight = 0.7
+        )
+        
+        home_button = ctk.CTkButton(
+            toolbarContent_frame, 
+            text = "HOME", 
             command = lambda:self.controller.open_page("HomePage")
-        ).pack()
+        )
+        home_button.pack()
         
-        ctk.CTkButton(
-            scrollable_area, 
-            text = "Add Course", 
+        addCourse_button = ctk.CTkButton(
+            toolbarContent_frame, 
+            text = "ADD COURSE", 
             command = self.create_course_form_part1
-        ).pack()
+        )
+        addCourse_button.pack()
         
-        added_courses_div = ctk.CTkFrame(scrollable_area)
-        added_courses_div.pack(fill = "x")
+        trackGoal_button = ctk.CTkButton(
+            toolbarContent_frame, 
+            text = "TRACK GOAL", 
+            # command = lambda course = course:open_goal_tracker_page(course)
+        )
+        trackGoal_button.pack() 
+        
+        removeCourse_button = ctk.CTkButton(
+            toolbarContent_frame,
+            text = "REMOVE COURSE",
+            # command = lambda course = course:remove_course(course)
+        )
+        removeCourse_button.pack()
+            
+        coursesList_frame = ctk.CTkScrollableFrame(self)
+        coursesList_frame.place(
+            relx = 0.2,
+            rely = 0,
+            relwidth = 0.8,
+            relheight = 1
+        )
           
         for course in self.courses.values():
             def open_goal_tracker_page(course):
@@ -295,10 +329,10 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
                 self.courses.pop(str(course["id"]), None)
                 self.refresh_ui()
             
-            course_div = ctk.CTkFrame(added_courses_div)
-            course_div.pack()
+            course_frame = ctk.CTkFrame(coursesList_frame)
+            course_frame.pack()
         
-            course_title_div = ctk.CTkFrame(course_div)
+            course_title_div = ctk.CTkFrame(course_frame)
             course_title_div.pack()
             
             ctk.CTkLabel(
@@ -306,19 +340,7 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
                 text = str(course["name"])
             ).pack(side = "left")
             
-            ctk.CTkButton(
-                course_title_div, 
-                text = "Track Goal", 
-                command = lambda course = course:open_goal_tracker_page(course)
-            ).pack(side = "left") 
-            
-            ctk.CTkButton(
-                course_title_div,
-                text = "REMOVE COURSE",
-                command = lambda course = course: remove_course(course)
-            ).pack(side = "left")
-            
-            course_performance_div = ctk.CTkFrame(course_div)
+            course_performance_div = ctk.CTkFrame(course_frame)
             course_performance_div.pack()
             
             for assignment in course["assignments"].values():
