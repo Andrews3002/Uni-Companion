@@ -245,21 +245,24 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
         
         home_button = ctk.CTkButton(
             toolbarContent_frame, 
-            text = "HOME", 
+            text = "HOME",
+            font = ("Impact", 20),
             command = lambda:self.controller.open_page("HomePage")
         )
         home_button.pack()
         
         addCourse_button = ctk.CTkButton(
             toolbarContent_frame, 
-            text = "ADD COURSE", 
+            text = "ADD COURSE",
+            font = ("Impact", 20),
             command = self.create_course_form_part1
         )
         addCourse_button.pack()
         
         trackGoal_button = ctk.CTkButton(
             toolbarContent_frame, 
-            text = "TRACK GOAL", 
+            text = "TRACK GOAL",
+            font = ("Impact", 20),
             state = "disabled"
         )
         trackGoal_button.pack()
@@ -267,6 +270,7 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
         removeCourse_button = ctk.CTkButton(
             toolbarContent_frame,
             text = "REMOVE COURSE",
+            font = ("Impact", 20),
             state = "disabled"
         )
         removeCourse_button.pack()
@@ -310,7 +314,8 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
                 
                 ctk.CTkLabel(
                     form, 
-                    text = "give how much you scored in the assessment"
+                    text = "give how much you scored in the assessment",
+                    font = ("Impact", 20)
                 ).pack()
                 
                 numerator = ctk.CTkEntry(form)
@@ -318,7 +323,8 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
                 
                 ctk.CTkLabel(
                     form, 
-                    text = "give total marks the assessment was out of"
+                    text = "give total marks the assessment was out of",
+                    font = ("Impact", 20)
                 ).pack()
                 
                 denominator = ctk.CTkEntry(form)
@@ -334,13 +340,15 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
                     
                 ctk.CTkButton(
                     form, 
-                    text = "Update", 
+                    text = "Update",
+                    font = ("Impact", 20),
                     command = lambda:change_score(int(numerator.get()), int(denominator.get()))
                 ).pack()
                 
                 ctk.CTkButton(
                     form, 
-                    text = "Cancel", 
+                    text = "Cancel",
+                    font = ("Impact", 20),
                     command = form.destroy
                 ).pack()
                 
@@ -394,6 +402,7 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
             
             courseName_label = ctk.CTkLabel(
                 courseName_frame,
+                font = ("Impact", 40),
                 text = str(course["name"])
             )
             courseName_label.pack()
@@ -425,8 +434,8 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
                 
                 assignment_frame = ctk.CTkFrame(
                     coursePerformance_centeringFrame,
-                    width = 130,
-                    height = 150,
+                    width = 160,
+                    height = 170,
                     border_width = 1,
                     border_color = "black"
                 )
@@ -449,7 +458,8 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
                     assignmentTitle_centeringFrame.pack(expand = True)
                     
                     assignment_title_Label = ctk.CTkLabel(
-                        assignmentTitle_centeringFrame, 
+                        assignmentTitle_centeringFrame,
+                        font = ("Impact", 20),
                         text = str(assignment["name"])
                     )
                     assignment_title_Label.pack()
@@ -466,7 +476,8 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
                     assignmentScore_centeringFrame.pack(expand = True)
                 
                     score = ctk.CTkLabel(
-                        assignmentScore_centeringFrame, 
+                        assignmentScore_centeringFrame,
+                        font = ("Impact", 20),
                         text = str(
                             round(
                                 ((assignment["score"]/assignment["weightage"])*100),
@@ -478,7 +489,8 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
                     
                     update_button = ctk.CTkButton(
                         assignmentScore_centeringFrame, 
-                        text = "Update", 
+                        text = "Update",
+                        font = ("Impact", 20), 
                         command = lambda assignment = assignment: update_score(assignment)
                     )
                     update_button.pack()
@@ -486,6 +498,7 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
                     reset_button = ctk.CTkButton(
                         assignmentScore_centeringFrame,
                         text = "Reset",
+                        font = ("Impact", 20),
                         command = lambda assignment = assignment: reset_score(assignment)
                     )
                     reset_button.pack()
@@ -503,7 +516,8 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
                     
                     assignment_title_Label = ctk.CTkLabel(
                         assignmentTitle_centeringFrame, 
-                        text = str(assignment["name"])
+                        text = str(assignment["name"]),
+                        font = ("Impact", 20)
                     )
                     assignment_title_Label.pack()
                 
@@ -525,15 +539,16 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
                                 ((assignment["score"]/assignment["weightage"])*100),
                                 1
                             )
-                        )+"%"
+                        )+"%",
+                        font = ("Impact", 20)
                     )
                     score.pack()
             
             for coursework in course["coursework_exams"].values():
                 coursework_frame = ctk.CTkFrame(
                     coursePerformance_centeringFrame,
-                    width = 130,
-                    height = 150,
+                    width = 160,
+                    height = 170,
                     border_width = 1,
                     border_color = "black"
                 )
@@ -557,7 +572,8 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
                     
                     courseworkTitle_label = ctk.CTkLabel(
                         courseworkTitle_centeringFrame, 
-                        text = str(coursework["name"])
+                        text = str(coursework["name"]),
+                        font = ("Impact", 20),
                     )
                     courseworkTitle_label.pack()
                     
@@ -579,19 +595,22 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
                                 ((coursework["score"]/coursework["weightage"])*100),
                                 1
                             )
-                        )+"%"
+                        )+"%",
+                        font = ("Impact", 20)
                     )
                     score_label.pack()
                 
                     update_button = ctk.CTkButton(
                         courseworkScore_centeringFrame, 
-                        text = "Update", 
+                        text = "Update",
+                        font = ("Impact", 20),
                         command = lambda coursework = coursework: update_score(coursework)
                     ).pack()
                 
                     reset_button = ctk.CTkButton(
                         courseworkScore_centeringFrame,
                         text = "Reset",
+                        font = ("Impact", 20),
                         command = lambda coursework = coursework: reset_score(coursework)
                     ).pack()
                 else:
@@ -608,7 +627,8 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
                     
                     courseworkTitle_label = ctk.CTkLabel(
                         courseworkTitle_centeringFrame, 
-                        text = str(coursework["name"])
+                        text = str(coursework["name"]),
+                        font = ("Impact", 20)
                     )
                     courseworkTitle_label.pack()
                     
@@ -630,7 +650,8 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
                                 ((coursework["score"]/coursework["weightage"])*100),
                                 1
                             )
-                        )+"%"
+                        )+"%",
+                        font = ("Impact", 20)
                     )
                     score_label.pack()
         
@@ -647,35 +668,40 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
         #adding labels and input fields for the info needed for each course
         ctk.CTkLabel(
             form, 
-            text = "Course Name"
+            text = "Course Name",
+            font = ("Impact", 20)
         ).pack()
         course_name = ctk.CTkEntry(form)
         course_name.pack()
         
         ctk.CTkLabel(
             form, 
-            text = "Course ID"
+            text = "Course ID",
+            font = ("Impact", 20)
         ).pack()
         course_id = ctk.CTkEntry(form)
         course_id.pack()
         
         ctk.CTkLabel(
             form, 
-            text = "How much percent is your final out of?"
+            text = "How much percent is your final out of?",
+            font = ("Impact", 20)
         ).pack()
         final_weightage = ctk.CTkEntry(form)
         final_weightage.pack()
         
         ctk.CTkLabel(
             form, 
-            text = "Amount of Assignments"
+            text = "Amount of Assignments",
+            font = ("Impact", 20)
         ).pack()
         num_of_assignments = ctk.CTkEntry(form)
         num_of_assignments.pack()
         
         ctk.CTkLabel(
             form, 
-            text = "Amount of Coursework Exams"
+            text = "Amount of Coursework Exams",
+            font = ("Impact", 20)
         ).pack()
         num_of_coursework_exams = ctk.CTkEntry(form)
         num_of_coursework_exams.pack()
@@ -695,13 +721,15 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
         
         ctk.CTkButton(
             form, 
-            text = "Next", 
+            text = "Next",
+            font = ("Impact", 20),
             command = next_form
         ).pack()
         
         ctk.CTkButton(
             form, 
-            text = "Cancel", 
+            text = "Cancel",
+            font = ("Impact", 20),
             command = form.destroy
         ).pack()
         
@@ -727,7 +755,8 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
         for i in range(1, num_of_assignments+1):
             ctk.CTkLabel(
                 scrollable_area, 
-                text = "How much percent of your final grade is Assignment "+ str(i) +" worth?"
+                text = "How much percent of your final grade is Assignment "+ str(i) +" worth?",
+                font = ("Impact", 20)
             ).pack()
             weightage = ctk.CTkEntry(scrollable_area)
             weightage.pack()
@@ -737,7 +766,8 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
         for i in range(1, num_of_coursework_exams+1):
             ctk.CTkLabel(
                 scrollable_area, 
-                text = "How much percent of your final grade is Coursework Exam "+ str(i) +" worth?"
+                text = "How much percent of your final grade is Coursework Exam "+ str(i) +" worth?",
+                font = ("Impact", 20)
             ).pack()
             weightage = ctk.CTkEntry(scrollable_area)
             weightage.pack()
@@ -810,13 +840,15 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
         #adding to buttons at the end of the form to submit values or exit the form altogether    
         ctk.CTkButton(
             scrollable_area, 
-            text = "Submit", 
+            text = "Submit",
+            font = ("Impact", 20),
             command = submit_form
         ).pack()
         
         ctk.CTkButton(
             scrollable_area, 
-            text = "Cancel", 
+            text = "Cancel",
+            font = ("Impact", 20),
             command = form.destroy
         ).pack()  
 
@@ -849,7 +881,8 @@ class GoalTrackerPage(ctk.CTkFrame):
             
             ctk.CTkLabel(
                 form,
-                text = "What is the overall Percentage Goal you would like to achieve in this course?"
+                text = "What is the overall Percentage Goal you would like to achieve in this course?",
+                font = ("Impact", 20)
             ).pack()
             
             input_div = ctk.CTkFrame(form)
@@ -860,41 +893,48 @@ class GoalTrackerPage(ctk.CTkFrame):
             
             percent_sign = ctk.CTkLabel(
                 input_div,
-                text = "%"
+                text = "%",
+                font = ("Impact", 20)
             )
             percent_sign.pack(side = "left")
             
             ctk.CTkButton(
                 form,
                 text = "Enter",
+                font = ("Impact", 20),
                 command = update_goal_value
             ).pack()
             
             ctk.CTkButton(
                 form,
                 text = "Cancel",
+                font = ("Impact", 20),
                 command = form.destroy
             ).pack()
         
         ctk.CTkLabel(
             self, 
-            text = str(self.course["name"])
+            text = str(self.course["name"]),
+            font = ("Impact", 20)
         ).pack()
         
         ctk.CTkLabel(
             self, 
-            text = "Your goal for this course is to get "+str(self.course["goal"]*100)+"%"
+            text = "Your goal for this course is to get "+str(self.course["goal"]*100)+"%",
+            font = ("Impact", 20)
         ).pack()
         
         ctk.CTkButton(
             self, 
             text = "Edit Goal",
+            font = ("Impact", 20),
             command = edit_goal
         ).pack()
         
         ctk.CTkButton(
             self, 
-            text = "Back", 
+            text = "Back",
+            font = ("Impact", 20),
             command = lambda:self.controller.open_page("MidtermPerformanceTracker")
         ).pack()
         
@@ -945,7 +985,8 @@ class GoalTrackerPage(ctk.CTkFrame):
         
                 ctk.CTkLabel(
                     assessment_div, 
-                    text = assignment["name"]+": To attain your goal you need to get at least "+str(required_score)+"/"+str(weightage)
+                    text = assignment["name"]+": To attain your goal you need to get at least "+str(required_score)+"/"+str(weightage),
+                    font = ("Impact", 20)
                 ).pack()
             
             else:
@@ -955,7 +996,8 @@ class GoalTrackerPage(ctk.CTkFrame):
                 
                 ctk.CTkLabel(
                     assessment_div, 
-                    text = assignment["name"]+": GRADED"
+                    text = assignment["name"]+": GRADED",
+                    font = ("Impact", 20)
                 ).pack()
             
         for coursework_exam in self.course["coursework_exams"].values():
@@ -971,7 +1013,8 @@ class GoalTrackerPage(ctk.CTkFrame):
         
                 ctk.CTkLabel(
                     assessment_div, 
-                    text = coursework_exam["name"]+": To attain your goal you need to get at least "+str(required_score)+"/"+str(weightage)
+                    text = coursework_exam["name"]+": To attain your goal you need to get at least "+str(required_score)+"/"+str(weightage),
+                    font = ("Impact", 20)
                 ).pack()
             
             else:
@@ -982,7 +1025,8 @@ class GoalTrackerPage(ctk.CTkFrame):
                 
                 ctk.CTkLabel(
                     assessment_div, 
-                    text = coursework_exam["name"]+": GRADED"
+                    text = coursework_exam["name"]+": GRADED",
+                    font = ("Impact", 20)
                 ).pack()
                 
         required_score = round((goal - required_score_sum), 1)
@@ -992,7 +1036,8 @@ class GoalTrackerPage(ctk.CTkFrame):
         
         ctk.CTkLabel(
             assessment_div, 
-            text = "Final: To attain your goal you need to get at least "+str(required_score)+"/"+str(self.course["final_weightage"]*100)
+            text = "Final: To attain your goal you need to get at least "+str(required_score)+"/"+str(self.course["final_weightage"]*100),
+            font = ("Impact", 20)
         ).pack()            
 
 # Tertiary GPA Tracker App
@@ -1002,12 +1047,14 @@ class TertiaryGPATracker(ctk.CTkFrame):
         
         ctk.CTkLabel(
             self, 
-            text = "Tertiary GPA Tracker"
+            text = "Tertiary GPA Tracker",
+            font = ("Impact", 20)
         ).pack()
         
         ctk.CTkButton(
             self, 
-            text = "Home", 
+            text = "Home",
+            font = ("Impact", 20),
             command = lambda:controller.open_page("HomePage")
         ).pack()
         
