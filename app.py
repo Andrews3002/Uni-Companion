@@ -326,6 +326,51 @@ class MidtermPerformanceTracker(Frame):
             pady = 30
         )
         
+        def confirm_remove_course(course):
+            form = TopLevel(self)
+            form.title("Remove Course")
+            form.transient(self)
+            if form.winfo_exists():
+                form.grab_set()
+                form.focus()
+                form.attributes("-topmost", True)
+                
+            width = 700
+            height = 150
+                
+            # Get the screen dimensions
+            screen_width = self.winfo_screenwidth()
+            screen_height = self.winfo_screenheight()
+
+            # Calculate center position
+            x = int((screen_width / 2) - (width / 2))
+            y = int((screen_height / 2) - (height / 2))
+
+            # Set size and position
+            form.geometry(f"{width}x{height}+{x}+{y}")
+            
+            Label(
+                form,
+                text = "Are you sure you want to remove this course?",
+                font = ("Impact", 20)
+            ).pack()
+            
+            Button(
+                form,
+                text = "Yes",
+                font = ("Impact", 20),
+                command = lambda: remove_course(course)
+            ).pack(
+                pady = 10
+            )
+            
+            Button(
+                form,
+                text = "Cancel",
+                font = ("Impact", 20),
+                command = form.destroy
+            ).pack()
+        
         removeCourse_button = Button(
             toolbarContent_frame,
             text = "REMOVE COURSE",
@@ -346,7 +391,7 @@ class MidtermPerformanceTracker(Frame):
             
             removeCourse_button.configure(
                 state = "normal",
-                command = lambda: remove_course(selectedCourse)
+                command = lambda: confirm_remove_course(selectedCourse)
             )
         
         coursesList_frame = ScrollableFrame(
@@ -378,7 +423,19 @@ class MidtermPerformanceTracker(Frame):
                     form.focus()
                     form.attributes("-topmost", True)
                     
-                form.geometry("400x210")
+                width = 400
+                height = 210
+                    
+                # Get the screen dimensions
+                screen_width = self.winfo_screenwidth()
+                screen_height = self.winfo_screenheight()
+
+                # Calculate center position
+                x = int((screen_width / 2) - (width / 2))
+                y = int((screen_height / 2) - (height / 2))
+
+                # Set size and position
+                form.geometry(f"{width}x{height}+{x}+{y}")
                 
                 Label(
                     form, 
@@ -760,7 +817,19 @@ class MidtermPerformanceTracker(Frame):
             form.focus()
             form.attributes("-topmost", True)
             
-        form.geometry("400x380")
+        width = 400
+        height = 380
+            
+        # Get the screen dimensions
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+
+        # Calculate center position
+        x = int((screen_width / 2) - (width / 2))
+        y = int((screen_height / 2) - (height / 2))
+
+        # Set size and position
+        form.geometry(f"{width}x{height}+{x}+{y}")
         
         #adding labels and input fields for the info needed for each course
         Label(
@@ -853,7 +922,19 @@ class MidtermPerformanceTracker(Frame):
             form.focus()
             form.attributes("-topmost", True)
             
-        form.geometry("600x380")
+        width = 600
+        height = 380
+            
+        # Get the screen dimensions
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+
+        # Calculate center position
+        x = int((screen_width / 2) - (width / 2))
+        y = int((screen_height / 2) - (height / 2))
+
+        # Set size and position
+        form.geometry(f"{width}x{height}+{x}+{y}")
         
         scrollable_area = ScrollableFrame(form)
         scrollable_area.pack(
@@ -1015,7 +1096,19 @@ class GoalTrackerPage(Frame):
                 form.focus()
                 form.attributes("-topmost", True)
                 
-            form.geometry("700x150")
+            width = 700
+            height = 150
+                
+            # Get the screen dimensions
+            screen_width = self.winfo_screenwidth()
+            screen_height = self.winfo_screenheight()
+
+            # Calculate center position
+            x = int((screen_width / 2) - (width / 2))
+            y = int((screen_height / 2) - (height / 2))
+
+            # Set size and position
+            form.geometry(f"{width}x{height}+{x}+{y}")
             
             Label(
                 form,
