@@ -370,13 +370,15 @@ class MidtermPerformanceTracker(Frame):
           
         for course in self.courses.values():
             def update_score(assessment):                    
-                form = ctk.CTkToplevel(self)
+                form = TopLevel(self)
                 form.title("Update Score")
                 form.transient(self)
                 if form.winfo_exists():
                     form.grab_set()
                     form.focus()
                     form.attributes("-topmost", True)
+                    
+                form.geometry("400x210")
                 
                 Label(
                     form, 
@@ -409,7 +411,9 @@ class MidtermPerformanceTracker(Frame):
                     text = "Update",
                     font = ("Impact", 20),
                     command = lambda:change_score(int(numerator.get()), int(denominator.get()))
-                ).pack()
+                ).pack(
+                    pady=10
+                )
                 
                 Button(
                     form, 
@@ -748,13 +752,15 @@ class MidtermPerformanceTracker(Frame):
         
     def create_course_form_part1(self):
         #creating the CTkFrame form to enter the data for the new course
-        form = ctk.CTkToplevel(self)
+        form = TopLevel(self)
         form.title("Course Information")
         form.transient(self)
         if form.winfo_exists():
             form.grab_set()
             form.focus()
             form.attributes("-topmost", True)
+            
+        form.geometry("400x380")
         
         #adding labels and input fields for the info needed for each course
         Label(
@@ -778,8 +784,19 @@ class MidtermPerformanceTracker(Frame):
             text = "How much percent is your final out of?",
             font = ("Impact", 20)
         ).pack()
-        final_weightage = ctk.CTkEntry(form)
-        final_weightage.pack()
+        
+        input_div = Frame(form)
+        input_div.pack()
+        
+        final_weightage = ctk.CTkEntry(input_div)
+        final_weightage.pack(side = "left")
+        
+        percent_sign = Label(
+            input_div,
+            text = "%",
+            font = ("Impact", 20)
+        )
+        percent_sign.pack(side = "left")
         
         Label(
             form, 
@@ -815,7 +832,9 @@ class MidtermPerformanceTracker(Frame):
             text = "Next",
             font = ("Impact", 20),
             command = next_form
-        ).pack()
+        ).pack(
+            pady=10
+        )
         
         Button(
             form, 
@@ -826,13 +845,15 @@ class MidtermPerformanceTracker(Frame):
         
     def create_course_form_part2(self, course_name, course_id, final_weightage, num_of_assignments, num_of_coursework_exams):
         #creating the form to enter the values and store them in variables
-        form = ctk.CTkToplevel(self)
+        form = TopLevel(self)
         form.title("Course Information")
         form.transient(self)
         if form.winfo_exists():
             form.grab_set()
             form.focus()
             form.attributes("-topmost", True)
+            
+        form.geometry("600x380")
         
         scrollable_area = ScrollableFrame(form)
         scrollable_area.pack(
@@ -849,8 +870,19 @@ class MidtermPerformanceTracker(Frame):
                 text = "How much percent of your final grade is Assignment "+ str(i) +" worth?",
                 font = ("Impact", 20)
             ).pack()
-            weightage = ctk.CTkEntry(scrollable_area)
-            weightage.pack()
+            
+            input_div = Frame(scrollable_area)
+            input_div.pack()
+            
+            weightage = ctk.CTkEntry(input_div)
+            weightage.pack(side = "left")
+            
+            percent_sign = Label(
+                input_div,
+                text = "%",
+                font = ("Impact", 20)
+            )
+            percent_sign.pack(side = "left")
             
             assignment_weightages.append(weightage)
         
@@ -860,8 +892,19 @@ class MidtermPerformanceTracker(Frame):
                 text = "How much percent of your final grade is Coursework Exam "+ str(i) +" worth?",
                 font = ("Impact", 20)
             ).pack()
-            weightage = ctk.CTkEntry(scrollable_area)
-            weightage.pack()
+            
+            input_div = Frame(scrollable_area)
+            input_div.pack()
+            
+            weightage = ctk.CTkEntry(input_div)
+            weightage.pack(side = "left")
+            
+            percent_sign = Label(
+                input_div,
+                text = "%",
+                font = ("Impact", 20)
+            )
+            percent_sign.pack(side = "left")
             
             coursework_exam_weightages.append(weightage)
             
@@ -934,7 +977,9 @@ class MidtermPerformanceTracker(Frame):
             text = "Submit",
             font = ("Impact", 20),
             command = submit_form
-        ).pack()
+        ).pack(
+            pady = 10
+        )
         
         Button(
             scrollable_area, 
@@ -962,13 +1007,15 @@ class GoalTrackerPage(Frame):
                 form.destroy()
                 self.refresh_gui()
         
-            form = ctk.CTkToplevel(self)
+            form = TopLevel(self)
             form.title("Edit Goal")
             form.transient(self)
             if form.winfo_exists():
                 form.grab_set()
                 form.focus()
                 form.attributes("-topmost", True)
+                
+            form.geometry("700x150")
             
             Label(
                 form,
@@ -994,7 +1041,9 @@ class GoalTrackerPage(Frame):
                 text = "Enter",
                 font = ("Impact", 20),
                 command = update_goal_value
-            ).pack()
+            ).pack(
+                pady = 10
+            )
             
             Button(
                 form,

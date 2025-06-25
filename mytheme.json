@@ -52,5 +52,18 @@
         "border_color": ["#444444", "#333333"],
         "border_width": 0,
         "corner_radius": 0
+    },
+
+    "CTkToplevel": {
+        "fg_color": ["#2b2b2b", "#1a1a1a"]
+    },
+
+    "CTkEntry": {
+        "fg_color": ["#2b2b2b", "#1a1a1a"],
+        "border_color": ["#5e5e5e", "#3c3c3c"],
+        "text_color": ["#ffffff", "#cccccc"],
+        "placeholder_text_color": ["#aaaaaa", "#666666"],
+        "corner_radius": 6,
+        "border_width": 2
     }
 }
