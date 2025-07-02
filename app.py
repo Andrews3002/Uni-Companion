@@ -294,10 +294,10 @@ class MidtermPerformanceTracker(Frame):
         home_button = Button(
             toolbarContent_frame, 
             text = "HOME",
-            font = ("Impact", 20),
             command = lambda:self.controller.open_page("HomePage"),
             width = 250,
-            height = 50
+            height = 50,
+            font = ("Impact", 20),
         )
         home_button.pack(
             pady = 30
@@ -1146,10 +1146,9 @@ class GoalTrackerPage(Frame):
                 command = form.destroy
             ).pack()
             
-        navbar_frame = ctk.CTkFrame(
+        navbar_frame = Frame(
             self,
-            border_width = 2,
-            border_color = "black"
+            fg_color = "#242323"
         )
         navbar_frame.place(
             relx = 0,
@@ -1158,11 +1157,7 @@ class GoalTrackerPage(Frame):
             relheight = 1
         )
         
-        logo_frame = ctk.CTkFrame(
-            navbar_frame,
-            border_width = 2,
-            border_color = "black"
-        )
+        logo_frame = Frame(navbar_frame)
         logo_frame.place(
             relx = 0,
             rely = 0,
@@ -1170,11 +1165,7 @@ class GoalTrackerPage(Frame):
             relheight = 0.3
         )
         
-        navButtons_frame = ctk.CTkFrame(
-            navbar_frame,
-            border_width = 2,
-            border_color = "black"
-        )
+        navButtons_frame = Frame(navbar_frame)
         navButtons_frame.place(
             relx = 0,
             rely = 0.3,
@@ -1182,7 +1173,7 @@ class GoalTrackerPage(Frame):
             relheight = 0.7
         )
         
-        header_frame = ctk.CTkFrame(
+        header_frame = Frame(
             self,
             border_width = 2,
             border_color = "black"
@@ -1194,10 +1185,9 @@ class GoalTrackerPage(Frame):
             relheight = 0.2
         )
         
-        content_frame = ctk.CTkScrollableFrame(
+        content_frame = ScrollableFrame(
             self,
-            border_width = 2,
-            border_color = "black"
+            fg_color = "#18016b"
         )
         content_frame.place(
             relx = 0.2,
@@ -1206,42 +1196,65 @@ class GoalTrackerPage(Frame):
             relheight = 0.8
         )
         
-        ctk.CTkLabel(
-            header_frame, 
-            text = str(self.course["name"])
+        logo = ctk.CTkImage(
+            light_image = Image.open("images/Logo.png"),
+            dark_image = Image.open("images/Logo.png"),
+            size = (400, 400)
+        )
+        
+        logoFrame_label = Label(
+            logo_frame,
+            text="",
+            image = logo
+        )
+        logoFrame_label.pack(
+            fill="both",
+            expand="true"
+        )
+        
+        Label(
+            header_frame,
+            text = str(self.course["name"])+" ("+str(self.course["id"])+")",
+            font = ("Impact", 60)
         ).place(
             relx = 0.5,
             rely = 0.5,
             anchor = "s"
         )
         
-        ctk.CTkLabel(
+        Label(
             header_frame, 
-            text = "Your goal is to attain "+str(self.course["goal"]*100)+"%"
+            text = "Your goal is to attain "+str(self.course["goal"]*100)+"%",
+            font = ("Impact", 20)
         ).place(
             relx = 0.5,
             rely = 0.5,
             anchor = "n"
         )
         
-        ctk.CTkButton(
+        Button(
             navButtons_frame, 
             text = "Edit Goal",
+            width = 250,
+            height = 50,
             font = ("Impact", 20),
             command = edit_goal
         ).place(
             relx = 0.5,
-            rely = 0.2,
+            rely = 0.1,
             anchor = "center"
         )
         
-        ctk.CTkButton(
+        Button(
             navButtons_frame, 
-            text = "Back", 
+            text = "Back",
+            width = 250,
+            height = 50,
+            font = ("Impact", 20),
             command = lambda:self.controller.open_page("MidtermPerformanceTracker")
         ).place(
             relx = 0.5,
-            rely = 0.3,
+            rely = 0.2,
             anchor = "center"
         )
         
@@ -1278,66 +1291,75 @@ class GoalTrackerPage(Frame):
             score = assignment["score"]*100
             weightage = round((assignment["weightage"]*100), 1)
             
-            assessment_frame = ctk.CTkFrame(
+            assessment_frame = Frame(
                 content_frame,
                 border_width = 2,
                 border_color = "black",
+                fg_color = "#242424",
                 height = 150,
-                width = 1200
+                width = 1200,
+                corner_radius = 10
             )
             assessment_frame.pack(
                 pady = 20
             )
             
-            assessmentHeader_frame = ctk.CTkFrame(
-                assessment_frame,
-                border_width = 2,
-                border_color = "black"
-            )
+            assessmentHeader_frame = Frame(assessment_frame)
             assessmentHeader_frame.place(
-                relx = 0,
-                rely = 0,
-                relwidth = 0.35,
-                relheight = 1
+                relx = 0.01,
+                rely = 0.1,
+                relwidth = 0.3395,
+                relheight = 0.8
             )
             
-            assessmentContent_frame = ctk.CTkFrame(
+            assessementSeperator = Frame(
                 assessment_frame,
-                border_width = 2,
-                border_color = "black"
+                fg_color = "black",
+                height = 146,
+                width = 2
             )
-            assessmentContent_frame.place(
+            assessementSeperator.place(
                 relx = 0.35,
-                rely = 0,
-                relwidth = 0.65,
-                relheight = 1
+                rely = 0.5,
+                anchor = "center"
+            )
+            
+            assessmentContent_frame = Frame(assessment_frame)
+            assessmentContent_frame.place(
+                relx = 0.3505,
+                rely = 0.1,
+                relwidth = 0.6395,
+                relheight = 0.8
             )
             
             if assignment["status"] == "WAITING":
                 required_score = round(((weightage/total_remainder)*goal_remainder), 1)
                 required_score_sum += required_score
                 
-                ctk.CTkLabel(
+                Label(
                     assessmentHeader_frame, 
-                    text = assignment["name"]
+                    text = assignment["name"],
+                    font = ("Impact", 40)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
                     anchor = "center"
                 )
                 
-                ctk.CTkLabel(
+                Label(
                     assessmentContent_frame, 
-                    text = "You need to get at least "
+                    text = "You need to get at least",
+                    font = ("Impact", 25)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
                     anchor = "s"
                 )
                 
-                ctk.CTkLabel(
+                Label(
                     assessmentContent_frame, 
-                    text = str(required_score)+"/"+str(weightage)
+                    text = str(required_score)+"/"+str(weightage),
+                    font = ("Impact", 25)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
@@ -1347,18 +1369,20 @@ class GoalTrackerPage(Frame):
             else:
                 required_score_sum += assignment["score"]*100
                 
-                ctk.CTkLabel(
+                Label(
                     assessmentHeader_frame, 
-                    text = assignment["name"]
+                    text = assignment["name"],
+                    font = ("Impact", 40)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
                     anchor = "center"
                 )
                 
-                ctk.CTkLabel(
+                Label(
                     assessmentContent_frame, 
-                    text = "GRADED"
+                    text = "GRADED",
+                    font = ("Impact", 25)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
@@ -1369,66 +1393,75 @@ class GoalTrackerPage(Frame):
             score = coursework_exam["score"]*100
             weightage = round((coursework_exam["weightage"]*100), 1)
             
-            assessment_frame = ctk.CTkFrame(
+            assessment_frame = Frame(
                 content_frame,
                 border_width = 2,
                 border_color = "black",
+                fg_color = "#242424",
                 height = 150,
-                width = 1200
+                width = 1200,
+                corner_radius = 10
             )
             assessment_frame.pack(
                 pady = 20
             )
             
-            assessmentHeader_frame = ctk.CTkFrame(
-                assessment_frame,
-                border_width = 2,
-                border_color = "black"
-            )
+            assessmentHeader_frame = Frame(assessment_frame)
             assessmentHeader_frame.place(
-                relx = 0,
-                rely = 0,
-                relwidth = 0.35,
-                relheight = 1
+                relx = 0.01,
+                rely = 0.1,
+                relwidth = 0.3395,
+                relheight = 0.8
             )
             
-            assessmentContent_frame = ctk.CTkFrame(
+            assessementSeperator = Frame(
                 assessment_frame,
-                border_width = 2,
-                border_color = "black"
+                fg_color = "black",
+                height = 146,
+                width = 2
             )
-            assessmentContent_frame.place(
+            assessementSeperator.place(
                 relx = 0.35,
-                rely = 0,
-                relwidth = 0.65,
-                relheight = 1
+                rely = 0.5,
+                anchor = "center"
+            )
+            
+            assessmentContent_frame = Frame(assessment_frame)
+            assessmentContent_frame.place(
+                relx = 0.3505,
+                rely = 0.1,
+                relwidth = 0.6395,
+                relheight = 0.8
             )
             
             if coursework_exam["status"] == "WAITING":
                 required_score = round(((weightage/total_remainder)*goal_remainder), 1)
                 required_score_sum += required_score
         
-                ctk.CTkLabel(
+                Label(
                     assessmentHeader_frame, 
-                    text = coursework_exam["name"]
+                    text = coursework_exam["name"],
+                    font = ("Impact", 40)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
                     anchor = "center"
                 )
                 
-                ctk.CTkLabel(
+                Label(
                     assessmentContent_frame, 
-                    text = "You need to get at least "
+                    text = "You need to get at least",
+                    font = ("Impact", 25)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
                     anchor = "s"
                 )
                 
-                ctk.CTkLabel(
+                Label(
                     assessmentContent_frame, 
-                    text = str(required_score)+"/"+str(weightage)
+                    text = str(required_score)+"/"+str(weightage),
+                    font = ("Impact", 25)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
@@ -1438,18 +1471,20 @@ class GoalTrackerPage(Frame):
             else:
                 required_score_sum += coursework_exam["score"]*100
                 
-                ctk.CTkLabel(
+                Label(
                     assessmentHeader_frame, 
-                    text = coursework_exam["name"]
+                    text = coursework_exam["name"],
+                    font = ("Impact", 40)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
                     anchor = "center"
                 )
                 
-                ctk.CTkLabel(
+                Label(
                     assessmentContent_frame, 
-                    text = "GRADED"
+                    text = "GRADED",
+                    font = ("Impact", 25)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
@@ -1458,62 +1493,71 @@ class GoalTrackerPage(Frame):
                 
         required_score = round((goal - required_score_sum), 1)
         
-        final_frame = ctk.CTkFrame(
+        final_frame = Frame(
             content_frame,
             border_width = 2,
             border_color = "black",
+            fg_color = "#242424",
             height = 150,
-            width = 1200
+            width = 1200,
+            corner_radius = 10
         )
         final_frame.pack(
             pady = 20
         )
         
-        finalHeader_frame = ctk.CTkFrame(
-            final_frame,
-            border_width = 2,
-            border_color = "black"
-        )
+        finalHeader_frame = Frame(final_frame)
         finalHeader_frame.place(
-            relx = 0,
-            rely = 0,
-            relwidth = 0.35,
-            relheight = 1
+            relx = 0.01,
+            rely = 0.1,
+            relwidth = 0.3395,
+            relheight = 0.8
         )
         
-        finalContent_frame = ctk.CTkFrame(
+        finalSeparator = Frame(
             final_frame,
-            border_width = 2,
-            border_color = "black"
+            fg_color = "black",
+            height = 146,
+            width = 2
         )
-        finalContent_frame.place(
+        finalSeparator.place(
             relx = 0.35,
-            rely = 0,
-            relwidth = 0.65,
-            relheight = 1
+            rely = 0.5,
+            anchor = "center"
         )
         
-        ctk.CTkLabel(
+        finalContent_frame = Frame(final_frame)
+        finalContent_frame.place(
+            relx = 0.3505,
+            rely = 0.1,
+            relwidth = 0.6395,
+            relheight = 0.8
+        )
+        
+        Label(
             finalHeader_frame, 
-            text = "Final Exam"
+            text = "Final Exam",
+            font = ("Impact", 40)
         ).place(
             relx = 0.5,
             rely = 0.5,
             anchor = "center"
         ) 
         
-        ctk.CTkLabel(
+        Label(
             finalContent_frame, 
-            text = "You need to get at least"
+            text = "You need to get at least",
+            font = ("Impact", 25)
         ).place(
             relx = 0.5,
             rely = 0.5,
             anchor = "s"
         )  
         
-        ctk.CTkLabel(
+        Label(
             finalContent_frame, 
-            text = str(required_score)+"/"+str(self.course["final_weightage"]*100)
+            text = str(required_score)+"/"+str(self.course["final_weightage"]*100),
+            font = ("Impact", 25)
         ).place(
             relx = 0.5,
             rely = 0.5,
