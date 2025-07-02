@@ -3,11 +3,13 @@
         "columnspan",
         "customtkinter",
         "padx",
+        "pady",
         "pywinstyles",
         "relheight",
         "relwidth",
         "relx",
         "rowspan",
+        "Toplevel",
         "weightage",
         "weightages"
     ]
