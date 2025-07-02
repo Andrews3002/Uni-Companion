@@ -1215,7 +1215,7 @@ class GoalTrackerPage(Frame):
         Label(
             header_frame,
             text = str(self.course["name"])+" ("+str(self.course["id"])+")",
-            font = ("Impact", 60)
+            font = ("Impact", 50)
         ).place(
             relx = 0.5,
             rely = 0.5,
@@ -1349,7 +1349,7 @@ class GoalTrackerPage(Frame):
                 Label(
                     assessmentContent_frame, 
                     text = "You need to get at least",
-                    font = ("Impact", 25)
+                    font = ("Impact", 20)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
@@ -1359,7 +1359,7 @@ class GoalTrackerPage(Frame):
                 Label(
                     assessmentContent_frame, 
                     text = str(required_score)+"/"+str(weightage),
-                    font = ("Impact", 25)
+                    font = ("Impact", 20)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
@@ -1382,7 +1382,7 @@ class GoalTrackerPage(Frame):
                 Label(
                     assessmentContent_frame, 
                     text = "GRADED",
-                    font = ("Impact", 25)
+                    font = ("Impact", 20)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
@@ -1451,7 +1451,7 @@ class GoalTrackerPage(Frame):
                 Label(
                     assessmentContent_frame, 
                     text = "You need to get at least",
-                    font = ("Impact", 25)
+                    font = ("Impact", 20)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
@@ -1461,7 +1461,7 @@ class GoalTrackerPage(Frame):
                 Label(
                     assessmentContent_frame, 
                     text = str(required_score)+"/"+str(weightage),
-                    font = ("Impact", 25)
+                    font = ("Impact", 20)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
@@ -1484,7 +1484,7 @@ class GoalTrackerPage(Frame):
                 Label(
                     assessmentContent_frame, 
                     text = "GRADED",
-                    font = ("Impact", 25)
+                    font = ("Impact", 20)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
@@ -1547,7 +1547,7 @@ class GoalTrackerPage(Frame):
         Label(
             finalContent_frame, 
             text = "You need to get at least",
-            font = ("Impact", 25)
+            font = ("Impact", 20)
         ).place(
             relx = 0.5,
             rely = 0.5,
@@ -1557,7 +1557,7 @@ class GoalTrackerPage(Frame):
         Label(
             finalContent_frame, 
             text = str(required_score)+"/"+str(self.course["final_weightage"]*100),
-            font = ("Impact", 25)
+            font = ("Impact", 20)
         ).place(
             relx = 0.5,
             rely = 0.5,
