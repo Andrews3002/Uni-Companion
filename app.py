@@ -235,10 +235,11 @@ class MidtermPerformanceTracker(ctk.CTkFrame):
                     course = course, 
                     controller = self.controller
                 )
-                page.grid(
-                    row = 0, 
-                    column = 0, 
-                    sticky = "nsew"
+                page.place(
+                    relx = 0,
+                    rely = 0,
+                    relheight = 1,
+                    relwidth = 1
                 )
                 page.tkraise()
                 
