@@ -1,6 +1,8 @@
+import os
+import sys
 import tkinter as tk
 import customtkinter as ctk
-from PIL import Image
+from PIL import Image, ImageTk
 
 class Button(ctk.CTkButton):
     def __init__(self, parent, **variants):
@@ -46,6 +48,8 @@ class App(ctk.CTk):
         self.title('Uni Companion')
         self.after(10, lambda: self.state('zoomed'))
         
+        
+                        
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("mytheme.json")
         
@@ -537,9 +541,14 @@ class MidtermPerformanceTracker(Frame):
             courseName_label = Label(
                 courseName_frame,
                 font = ("Impact", 40),
-                text = str(course["name"])
+                text = str(course["name"]) + " (" + str(course["id"]) + ")"
             )
             courseName_label.pack()
+            
+            courseName_label.bind(
+                "<Button-1>", 
+                selectCourse_Handler(course)
+            )
             
             courseNameButtonBorder_frame = Frame(
                 courseName_frame,
@@ -550,7 +559,7 @@ class MidtermPerformanceTracker(Frame):
                 fill="x"
             )
             
-            courseName_label.bind(
+            courseNameButtonBorder_frame.bind(
                 "<Button-1>", 
                 selectCourse_Handler(course)
             )
@@ -575,6 +584,11 @@ class MidtermPerformanceTracker(Frame):
                 expand = True
             )
             
+            coursePerformance_centeringFrame.bind(
+                "<Button-1>", 
+                selectCourse_Handler(course)
+            )
+            
             for assignment in course["assignments"].values():
                 
                 assignment_frame = Frame(
@@ -591,6 +605,11 @@ class MidtermPerformanceTracker(Frame):
                     pady = 10
                 )
                 
+                assignment_frame.bind(
+                    "<Button-1>", 
+                    selectCourse_Handler(course)
+                )
+                
                 if selectedCourse and selectedCourse == course:
                     assignmentTitle_frame = Frame(assignment_frame)
                     assignmentTitle_frame.place(
@@ -602,7 +621,7 @@ class MidtermPerformanceTracker(Frame):
                     
                     assignmentTitle_centeringFrame = Frame(assignmentTitle_frame)
                     assignmentTitle_centeringFrame.pack(expand = True)
-                    
+                        
                     assignment_title_Label = Label(
                         assignmentTitle_centeringFrame,
                         font = ("Impact", 20),
@@ -650,6 +669,7 @@ class MidtermPerformanceTracker(Frame):
                         command = lambda assignment = assignment: reset_score(assignment)
                     )
                     reset_button.pack()
+                    
                 else:
                     assignmentTitle_frame = Frame(assignment_frame)
                     assignmentTitle_frame.place(
@@ -659,8 +679,18 @@ class MidtermPerformanceTracker(Frame):
                         relheight = 0.3
                     )
                     
+                    assignmentTitle_frame.bind(
+                        "<Button-1>", 
+                        selectCourse_Handler(course)
+                    )
+                    
                     assignmentTitle_centeringFrame = Frame(assignmentTitle_frame)
                     assignmentTitle_centeringFrame.pack(expand = True)
+                    
+                    assignmentTitle_centeringFrame.bind(
+                        "<Button-1>", 
+                        selectCourse_Handler(course)
+                    )
                     
                     assignment_title_Label = Label(
                         assignmentTitle_centeringFrame, 
@@ -668,6 +698,11 @@ class MidtermPerformanceTracker(Frame):
                         font = ("Impact", 20)
                     )
                     assignment_title_Label.pack()
+                
+                    assignment_title_Label.bind(
+                        "<Button-1>", 
+                        selectCourse_Handler(course)
+                    )
                 
                     assignmentScore_frame = Frame(assignment_frame)
                     assignmentScore_frame.place(
@@ -677,8 +712,18 @@ class MidtermPerformanceTracker(Frame):
                         relheight = 0.7,
                     )
                     
+                    assignmentScore_frame.bind(
+                        "<Button-1>", 
+                        selectCourse_Handler(course)
+                    )
+                    
                     assignmentScore_centeringFrame = Frame(assignmentScore_frame)
                     assignmentScore_centeringFrame.pack(expand = True)
+                    
+                    assignmentScore_centeringFrame.bind(
+                        "<Button-1>", 
+                        selectCourse_Handler(course)
+                    )
                 
                     score = Label(
                         assignmentScore_centeringFrame, 
@@ -691,6 +736,11 @@ class MidtermPerformanceTracker(Frame):
                         font = ("Impact", 20)
                     )
                     score.pack()
+                    
+                    score.bind(
+                        "<Button-1>", 
+                        selectCourse_Handler(course)
+                    )
             
             for coursework in course["coursework_exams"].values():
                 coursework_frame = Frame(
@@ -705,6 +755,11 @@ class MidtermPerformanceTracker(Frame):
                     side = "left",
                     padx = 10,
                     pady = 10
+                )
+                
+                coursework_frame.bind(
+                    "<Button-1>", 
+                    selectCourse_Handler(course)
                 )
                 
                 if selectedCourse and selectedCourse == course:
@@ -775,8 +830,18 @@ class MidtermPerformanceTracker(Frame):
                         relheight = 0.3
                     )
                     
+                    courseworkTitle_frame.bind(
+                        "<Button-1>", 
+                        selectCourse_Handler(course)
+                    )
+                    
                     courseworkTitle_centeringFrame = Frame(courseworkTitle_frame)
                     courseworkTitle_centeringFrame.pack(expand = True)
+                    
+                    courseworkTitle_centeringFrame.bind(
+                        "<Button-1>", 
+                        selectCourse_Handler(course)
+                    )
                     
                     courseworkTitle_label = Label(
                         courseworkTitle_centeringFrame, 
@@ -784,6 +849,11 @@ class MidtermPerformanceTracker(Frame):
                         font = ("Impact", 20)
                     )
                     courseworkTitle_label.pack()
+                    
+                    courseworkTitle_label.bind(
+                        "<Button-1>", 
+                        selectCourse_Handler(course)
+                    )
                     
                     courseworkScore_frame = Frame(coursework_frame)
                     courseworkScore_frame.place(
@@ -793,8 +863,18 @@ class MidtermPerformanceTracker(Frame):
                         relheight = 0.7
                     )
                     
+                    courseworkScore_frame.bind(
+                        "<Button-1>", 
+                        selectCourse_Handler(course)
+                    )
+                    
                     courseworkScore_centeringFrame = Frame(courseworkScore_frame)
                     courseworkScore_centeringFrame.pack(expand = True)
+                
+                    courseworkScore_centeringFrame.bind(
+                        "<Button-1>", 
+                        selectCourse_Handler(course)
+                    )
                 
                     score_label = Label(
                         courseworkScore_centeringFrame, 
@@ -807,6 +887,11 @@ class MidtermPerformanceTracker(Frame):
                         font = ("Impact", 20)
                     )
                     score_label.pack()
+                    
+                    score_label.bind(
+                        "<Button-1>", 
+                        selectCourse_Handler(course)
+                    )
         
     def create_course_form_part1(self):
         #creating the CTkFrame form to enter the data for the new course
@@ -1234,7 +1319,7 @@ class GoalTrackerPage(Frame):
         
         Button(
             navButtons_frame, 
-            text = "Edit Goal",
+            text = "EDIT GOAL",
             width = 250,
             height = 50,
             font = ("Impact", 20),
@@ -1247,7 +1332,7 @@ class GoalTrackerPage(Frame):
         
         Button(
             navButtons_frame, 
-            text = "Back",
+            text = "BACK",
             width = 250,
             height = 50,
             font = ("Impact", 20),
