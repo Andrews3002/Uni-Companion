@@ -3,6 +3,11 @@ import sys
 import tkinter as tk
 import customtkinter as ctk
 from PIL import Image, ImageTk
+import ctypes
+
+# Set AppUserModelID BEFORE creating the root window
+myappid = 'mycompany.myapp.subapp.1.0'
+ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
 class Button(ctk.CTkButton):
     def __init__(self, parent, **variants):
@@ -48,7 +53,7 @@ class App(ctk.CTk):
         self.title('Uni Companion')
         self.after(10, lambda: self.state('zoomed'))
         
-        
+        self.iconbitmap("Logo.ico") 
                         
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("mytheme.json")
