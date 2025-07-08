@@ -1665,6 +1665,12 @@ class TertiaryGPATracker(Frame):
             font = ("Impact", 20)
         ).pack()
         
+        Label(
+            self, 
+            text = "Still Under Development",
+            font = ("Impact", 20)
+        ).pack()
+        
         Button(
             self, 
             text = "Home",
