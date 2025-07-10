@@ -239,6 +239,9 @@ class MidtermPerformanceTracker(Frame):
         for widget in self.winfo_children():
             widget.destroy()
             
+        main_width = self.winfo_screenwidth()
+        main_height = self.winfo_screenheight()
+
         def open_goal_tracker_page(course):
             page = GoalTrackerPage(
                 parent = self.parent, 
@@ -500,9 +503,9 @@ class MidtermPerformanceTracker(Frame):
                     border_width = 3,
                     border_color = "#f5007a",
                     fg_color = "#242323",
-                    height = 270,
-                    width = 1400,
-                    corner_radius = 30
+                    height = int(0.3 * main_height),
+                    width = int(0.7 * main_width),
+                    corner_radius = 20
                 )
             else:
                 course_frame = Frame(
@@ -510,12 +513,26 @@ class MidtermPerformanceTracker(Frame):
                     border_width = 2,
                     border_color = "black",
                     fg_color = "#242424",
-                    height = 270,
-                    width = 1400,
+                    height = int(0.3 * main_height),
+                    width = int(0.7 * main_width),
                     corner_radius = 20
                 )
             course_frame.pack(
                 pady = 50,
+            )
+
+            def resize_course_frame(event):
+                frame_height = self.winfo_height()
+                frame_width = self.winfo_width()
+
+                course_frame.configure(
+                    height = int(0.3 * frame_height),
+                    width = int(0.7 * frame_width)
+                )
+
+            self.bind(
+                "<Configure>",
+                resize_course_frame
             )
     
             def selectCourse_Handler(course):
@@ -898,6 +915,35 @@ class MidtermPerformanceTracker(Frame):
                         selectCourse_Handler(course)
                     )
         
+        def resize_buttons(event):
+            frame_width = self.winfo_screenwidth()
+            frame_height = self.winfo_screenheight()
+            
+            home_button.configure(
+                width = int(0.15 * frame_width),
+                height = int(0.05 * frame_height)
+            )
+
+            addCourse_button.configure(
+                width = int(0.15 * frame_width),
+                height = int(0.05 * frame_height)
+            )
+
+            trackGoal_button.configure(
+                width = int(0.15 * frame_width),
+                height = int(0.05 * frame_height)
+            )
+
+            removeCourse_button.configure(
+                width = int(0.15 * frame_width),
+                height = int(0.05 * frame_height)
+            )
+
+        self.bind(
+            "<Configure>",
+            resize_buttons
+        )
+
     def create_course_form_part1(self):
         #creating the CTkFrame form to enter the data for the new course
         form = TopLevel(self)
