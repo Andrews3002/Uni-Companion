@@ -5,8 +5,7 @@ import customtkinter as ctk
 from PIL import Image, ImageTk
 import ctypes
 
-# Set AppUserModelID BEFORE creating the root window
-myappid = 'mycompany.myapp.subapp.1.0'
+myappid = 'uni-companion.gui.1.0'
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
 class Button(ctk.CTkButton):
@@ -15,7 +14,7 @@ class Button(ctk.CTkButton):
         }
         defaults.update(variants)
         super().__init__(parent, **defaults)
-        
+
 class Frame(ctk.CTkFrame):
     def __init__(self, parent, **variants):
         defaults = {
@@ -23,7 +22,7 @@ class Frame(ctk.CTkFrame):
         }
         defaults.update(variants)
         super().__init__(parent, **defaults)
-        
+
 class ScrollableFrame(ctk.CTkScrollableFrame):
     def __init__(self, parent, **variants):
         defaults = {
@@ -31,7 +30,7 @@ class ScrollableFrame(ctk.CTkScrollableFrame):
         }
         defaults.update(variants)
         super().__init__(parent, **defaults)
-        
+
 class Label(ctk.CTkLabel):
     def __init__(self, parent, **variants):
         defaults = {
@@ -133,7 +132,7 @@ class HomePage(Frame):
         main_label = Label(
             main_label_frame, 
             text = "Welcome to the Uni Companion App\nSelect your desired tool",
-            font = ("Impact", 40, "bold")
+            font = ("Impact", 30, "bold")
         )
         main_label.place(
             relx = 0,
@@ -239,8 +238,8 @@ class MidtermPerformanceTracker(Frame):
         for widget in self.winfo_children():
             widget.destroy()
             
-        main_width = self.winfo_screenwidth()
-        main_height = self.winfo_screenheight()
+        main_width = self.winfo_width()
+        main_height = self.winfo_height()
 
         def open_goal_tracker_page(course):
             page = GoalTrackerPage(
@@ -282,7 +281,7 @@ class MidtermPerformanceTracker(Frame):
         logo = ctk.CTkImage(
             light_image = Image.open("images/Logo.png"),
             dark_image = Image.open("images/Logo.png"),
-            size = (400, 400)
+            size = (300, 300)
         )
         
         toolbarLogo_label = Label(
@@ -562,7 +561,7 @@ class MidtermPerformanceTracker(Frame):
             
             courseName_label = Label(
                 courseName_frame,
-                font = ("Impact", 40),
+                font = ("Impact", 30),
                 text = str(course["name"]) + " (" + str(course["id"]) + ")"
             )
             courseName_label.pack()
@@ -623,8 +622,8 @@ class MidtermPerformanceTracker(Frame):
                 )
                 assignment_frame.pack(
                     side = "left",
-                    padx = 10,
-                    pady = 10
+                    padx = 2,
+                    pady = 2
                 )
                 
                 assignment_frame.bind(
@@ -664,7 +663,7 @@ class MidtermPerformanceTracker(Frame):
                 
                     score = Label(
                         assignmentScore_centeringFrame,
-                        font = ("Impact", 20),
+                        font = ("Impact", 18),
                         text = str(
                             round(
                                 ((assignment["score"]/assignment["weightage"])*100),
@@ -677,7 +676,7 @@ class MidtermPerformanceTracker(Frame):
                     update_button = Button(
                         assignmentScore_centeringFrame, 
                         text = "Update",
-                        font = ("Impact", 20), 
+                        font = ("Impact", 18), 
                         command = lambda assignment = assignment: update_score(assignment)
                     )
                     update_button.pack(
@@ -687,7 +686,7 @@ class MidtermPerformanceTracker(Frame):
                     reset_button = Button(
                         assignmentScore_centeringFrame,
                         text = "Reset",
-                        font = ("Impact", 20),
+                        font = ("Impact", 18),
                         command = lambda assignment = assignment: reset_score(assignment)
                     )
                     reset_button.pack()
@@ -717,7 +716,7 @@ class MidtermPerformanceTracker(Frame):
                     assignment_title_Label = Label(
                         assignmentTitle_centeringFrame, 
                         text = str(assignment["name"]),
-                        font = ("Impact", 20)
+                        font = ("Impact", 18)
                     )
                     assignment_title_Label.pack()
                 
@@ -775,8 +774,8 @@ class MidtermPerformanceTracker(Frame):
                 )
                 coursework_frame.pack(
                     side = "left",
-                    padx = 10,
-                    pady = 10
+                    padx = 2,
+                    pady = 2
                 )
                 
                 coursework_frame.bind(
@@ -822,14 +821,14 @@ class MidtermPerformanceTracker(Frame):
                                 1
                             )
                         )+"%",
-                        font = ("Impact", 20)
+                        font = ("Impact", 18)
                     )
                     score_label.pack()
                 
                     update_button = Button(
                         courseworkScore_centeringFrame, 
                         text = "Update",
-                        font = ("Impact", 20),
+                        font = ("Impact", 18),
                         command = lambda coursework = coursework: update_score(coursework)
                     )
                     update_button.pack(
@@ -916,8 +915,8 @@ class MidtermPerformanceTracker(Frame):
                     )
         
         def resize_buttons(event):
-            frame_width = self.winfo_screenwidth()
-            frame_height = self.winfo_screenheight()
+            frame_width = self.winfo_width()
+            frame_height = self.winfo_height()
             
             home_button.configure(
                 width = int(0.15 * frame_width),
