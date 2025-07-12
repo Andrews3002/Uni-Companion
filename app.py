@@ -31,6 +31,40 @@ class ScrollableFrame(ctk.CTkScrollableFrame):
         defaults.update(variants)
         super().__init__(parent, **defaults)
 
+#TODO
+class HorizontalScrollableFrame(ctk.CTkFrame):
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
+
+        # Create canvas and scrollbar
+        self.canvas = ctk.CTkCanvas(self, height=200)
+        self.scrollbar = ctk.CTkScrollbar(self, orientation="horizontal", command=self.canvas.xview)
+        self.canvas.configure(xscrollcommand=self.scrollbar.set)
+
+        self.scrollable_frame = Frame(self.canvas)
+
+        # Bind to resize scrollregion when contents change
+        self.scrollable_frame.bind(
+            "<Configure>",
+            lambda e: self.canvas.configure(
+                scrollregion=self.canvas.bbox("all")
+            )
+        )
+
+        # Embed frame in canvas
+        self.window = self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+
+        # Layout
+        self.canvas.pack(side="top", fill="both", expand=True)
+        self.scrollbar.pack(side="bottom", fill="x")
+
+        # Allow resizing properly
+        self.scrollable_frame.bind("<Configure>", self._on_frame_configure)
+
+    def _on_frame_configure(self, event):
+        # Resize the embedded window to match scrollable_frame's height
+        self.canvas.itemconfig(self.window, height=event.height)
+
 class Label(ctk.CTkLabel):
     def __init__(self, parent, **variants):
         defaults = {
@@ -624,14 +658,9 @@ class MidtermPerformanceTracker(Frame):
             
             for assignment in course["assignments"].values():
                 
-                assignment_frame = Frame(
-                    coursePerformance_centeringFrame,
-                    corner_radius = 10
-                )
+                assignment_frame = Frame(coursePerformance_centeringFrame)
                 assignment_frame.pack(
-                    side = "left",
-                    padx = 2,
-                    pady = 2
+                    side = "left"
                 )
                 
                 def setSize(event, frame = assignment_frame):
@@ -640,9 +669,7 @@ class MidtermPerformanceTracker(Frame):
                     
                     frame.configure(
                         width = frame_width,
-                        height = frame_height,
-                        border_width = 3,
-                        border_color = "black"
+                        height = frame_height
                     )
                 
                 assignment_frame.bind(
@@ -658,10 +685,10 @@ class MidtermPerformanceTracker(Frame):
                 if selectedCourse and selectedCourse == course:
                     assignmentTitle_frame = Frame(assignment_frame)
                     assignmentTitle_frame.place(
-                        relx = 0.1,
-                        rely = 0,
-                        relwidth = 0.8,
-                        relheight = 0.3
+                        relx = 0.05,
+                        rely = 0.05,
+                        relwidth = 0.9,
+                        relheight = 0.25
                     )
                     
                     assignmentTitle_centeringFrame = Frame(assignmentTitle_frame)
@@ -676,17 +703,14 @@ class MidtermPerformanceTracker(Frame):
                 
                     assignmentScore_frame = Frame(assignment_frame)
                     assignmentScore_frame.place(
-                        relx = 0.1,
+                        relx = 0.05,
                         rely = 0.3,
-                        relwidth = 0.8,
-                        relheight = 0.7,
+                        relwidth = 0.9,
+                        relheight = 0.65,
                     )
                     
-                    assignmentScore_centeringFrame = Frame(assignmentScore_frame)
-                    assignmentScore_centeringFrame.pack(expand = True)
-                
-                    score = Label(
-                        assignmentScore_centeringFrame,
+                    score_label = Label(
+                        assignmentScore_frame,
                         font = ("Impact", 18),
                         text = str(
                             round(
@@ -695,33 +719,47 @@ class MidtermPerformanceTracker(Frame):
                             )
                         )+"%"
                     )
-                    score.pack()
+                    score_label.place(
+                        relx = 0.5,
+                        rely = 0.25,
+                        anchor = "center"
+                    )
                     
                     update_button = Button(
-                        assignmentScore_centeringFrame, 
+                        assignmentScore_frame, 
                         text = "Update",
                         font = ("Impact", 18), 
                         command = lambda assignment = assignment: update_score(assignment)
                     )
-                    update_button.pack(
-                        pady = 5
+                    update_button.place(
+                        relx = 0.5,
+                        rely = 0.5,
+                        anchor = "center",
+                        relwidth = 0.8,
+                        relheight = 0.25
                     )
                     
                     reset_button = Button(
-                        assignmentScore_centeringFrame,
+                        assignmentScore_frame,
                         text = "Reset",
                         font = ("Impact", 18),
                         command = lambda assignment = assignment: reset_score(assignment)
                     )
-                    reset_button.pack()
+                    reset_button.place(
+                        relx = 0.5,
+                        rely = 0.8,
+                        anchor = "center",
+                        relwidth = 0.8,
+                        relheight = 0.25
+                    )
                     
                 else:
                     assignmentTitle_frame = Frame(assignment_frame)
                     assignmentTitle_frame.place(
-                        relx = 0.1,
-                        rely = 0,
-                        relwidth = 0.8,
-                        relheight = 0.3
+                        relx = 0.05,
+                        rely = 0.05,
+                        relwidth = 0.9,
+                        relheight = 0.25
                     )
                     
                     assignmentTitle_frame.bind(
@@ -751,10 +789,10 @@ class MidtermPerformanceTracker(Frame):
                 
                     assignmentScore_frame = Frame(assignment_frame)
                     assignmentScore_frame.place(
-                        relx = 0.1,
+                        relx = 0.05,
                         rely = 0.3,
-                        relwidth = 0.8,
-                        relheight = 0.7,
+                        relwidth = 0.9,
+                        relheight = 0.65,
                     )
                     
                     assignmentScore_frame.bind(
@@ -788,16 +826,9 @@ class MidtermPerformanceTracker(Frame):
                     )
             
             for coursework in course["coursework_exams"].values():
-                coursework_frame = Frame(
-                    coursePerformance_centeringFrame,
-                    border_width = 3,
-                    border_color = "black",
-                    corner_radius = 10
-                )
+                coursework_frame = Frame(coursePerformance_centeringFrame)
                 coursework_frame.pack(
-                    side = "left",
-                    padx = 2,
-                    pady = 2
+                    side = "left"
                 )
                 
                 def setSize(event, frame = coursework_frame):
@@ -806,9 +837,7 @@ class MidtermPerformanceTracker(Frame):
                     
                     frame.configure(
                         width = frame_width,
-                        height = frame_height,
-                        border_width = 3,
-                        border_color = "black"
+                        height = frame_height
                     )
                 
                 coursework_frame.bind(
@@ -824,10 +853,10 @@ class MidtermPerformanceTracker(Frame):
                 if selectedCourse and selectedCourse == course:
                     courseworkTitle_frame = Frame(coursework_frame)
                     courseworkTitle_frame.place(
-                        relx = 0.1,
-                        rely = 0,
-                        relwidth = 0.8,
-                        relheight = 0.3
+                        relx = 0.05,
+                        rely = 0.05,
+                        relwidth = 0.9,
+                        relheight = 0.25
                     )
                     
                     courseworkTitle_centeringFrame = Frame(courseworkTitle_frame)
@@ -842,17 +871,14 @@ class MidtermPerformanceTracker(Frame):
                     
                     courseworkScore_frame = Frame(coursework_frame)
                     courseworkScore_frame.place(
-                        relx = 0.1,
+                        relx = 0.05,
                         rely = 0.3,
-                        relwidth = 0.8,
-                        relheight = 0.7
+                        relwidth = 0.9,
+                        relheight = 0.65,
                     )
-                    
-                    courseworkScore_centeringFrame = Frame(courseworkScore_frame)
-                    courseworkScore_centeringFrame.pack(expand = True)
                 
                     score_label = Label(
-                        courseworkScore_centeringFrame, 
+                        courseworkScore_frame, 
                         text = str(
                             round(
                                 ((coursework["score"]/coursework["weightage"])*100),
@@ -861,32 +887,46 @@ class MidtermPerformanceTracker(Frame):
                         )+"%",
                         font = ("Impact", 18)
                     )
-                    score_label.pack()
+                    score_label.place(
+                        relx = 0.5,
+                        rely = 0.25,
+                        anchor = "center"
+                    )
                 
                     update_button = Button(
-                        courseworkScore_centeringFrame, 
+                        courseworkScore_frame, 
                         text = "Update",
                         font = ("Impact", 18),
                         command = lambda coursework = coursework: update_score(coursework)
                     )
-                    update_button.pack(
-                        pady = 5
+                    update_button.place(
+                        relx = 0.5,
+                        rely = 0.5,
+                        anchor = "center",
+                        relwidth = 0.8,
+                        relheight = 0.25
                     )
                 
                     reset_button = Button(
-                        courseworkScore_centeringFrame,
+                        courseworkScore_frame,
                         text = "Reset",
                         font = ("Impact", 20),
                         command = lambda coursework = coursework: reset_score(coursework)
                     )
-                    reset_button.pack()
+                    reset_button.place(
+                        relx = 0.5,
+                        rely = 0.8,
+                        anchor = "center",
+                        relwidth = 0.8,
+                        relheight = 0.25
+                    )
                 else:
                     courseworkTitle_frame = Frame(coursework_frame)
                     courseworkTitle_frame.place(
-                        relx = 0.1,
-                        rely = 0,
-                        relwidth = 0.8,
-                        relheight = 0.3
+                        relx = 0.05,
+                        rely = 0.05,
+                        relwidth = 0.9,
+                        relheight = 0.25
                     )
                     
                     courseworkTitle_frame.bind(
@@ -916,10 +956,10 @@ class MidtermPerformanceTracker(Frame):
                     
                     courseworkScore_frame = Frame(coursework_frame)
                     courseworkScore_frame.place(
-                        relx = 0.1,
+                        relx = 0.05,
                         rely = 0.3,
-                        relwidth = 0.8,
-                        relheight = 0.7
+                        relwidth = 0.9,
+                        relheight = 0.65,
                     )
                     
                     courseworkScore_frame.bind(
