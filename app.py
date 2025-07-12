@@ -570,7 +570,7 @@ class MidtermPerformanceTracker(Frame):
             
             courseName_label = Label(
                 courseName_frame,
-                font = ("Impact", 30),
+                font = ("Impact", 40),
                 text = str(course["name"]) + " (" + str(course["id"]) + ")"
             )
             courseName_label.pack()
@@ -585,8 +585,11 @@ class MidtermPerformanceTracker(Frame):
                 height = 3,
                 fg_color = "black"
             )
-            courseNameButtonBorder_frame.pack(
-                fill="x"
+            courseNameButtonBorder_frame.place(
+                relx = 0.5,
+                rely = 1,
+                anchor = "s",
+                relwidth = 1
             )
             
             courseNameButtonBorder_frame.bind(
@@ -623,16 +626,29 @@ class MidtermPerformanceTracker(Frame):
                 
                 assignment_frame = Frame(
                     coursePerformance_centeringFrame,
-                    width = 200,
-                    height = 170,
-                    # border_width = 5,
-                    # border_color = "black",
                     corner_radius = 10
                 )
                 assignment_frame.pack(
                     side = "left",
                     padx = 2,
                     pady = 2
+                )
+                
+                def setSize(event, frame = assignment_frame):
+                    frame_width = int(0.128 * coursePerformance_frame.winfo_width())
+                    frame_height = int(0.794 * coursePerformance_frame.winfo_height())
+                    
+                    frame.configure(
+                        width = 200,
+                        # width = frame_width,
+                        height = frame_height,
+                        border_width = 5,
+                        border_color = "black"
+                    )
+                
+                assignment_frame.bind(
+                    "<Configure>",
+                    setSize
                 )
                 
                 assignment_frame.bind(
