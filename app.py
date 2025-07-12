@@ -1350,27 +1350,27 @@ class GoalTrackerPage(Frame):
         Button(
             navButtons_frame, 
             text = "EDIT GOAL",
-            width = 250,
-            height = 50,
             font = ("Impact", 20),
             command = edit_goal
         ).place(
             relx = 0.5,
             rely = 0.1,
-            anchor = "center"
+            anchor = "center",
+            relwidth = 0.7,
+            relheight = 0.08
         )
         
         Button(
             navButtons_frame, 
             text = "BACK",
-            width = 250,
-            height = 50,
             font = ("Impact", 20),
             command = lambda:self.controller.open_page("MidtermPerformanceTracker")
         ).place(
             relx = 0.5,
-            rely = 0.2,
-            anchor = "center"
+            rely = 0.3,
+            anchor = "center",
+            relwidth = 0.7,
+            relheight = 0.08
         )
         
         goal = self.course["goal"]*100
