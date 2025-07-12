@@ -112,41 +112,42 @@ class HomePage(Frame):
         
         main_frame = Frame(
             body,
-            fg_color = "#242323"
+            fg_color = "#242222"
         )
         main_frame.place(
-            relx = 0.25,
-            rely = 0.25,
-            relwidth = 0.5,
-            relheight = 0.5
-        )
-        
-        main_label_frame = Frame(main_frame)
-        main_label_frame.place(
-            relx = 0,
+            relx = 0.5,
             rely = 0,
-            relwidth = 1,
-            relheight = 0.3
+            anchor = "n",
+            relwidth = 0.4,
+            relheight = 1
         )
         
-        main_label = Label(
-            main_label_frame, 
-            text = "Welcome to the Uni Companion App\nSelect your desired tool",
-            font = ("Impact", 30, "bold")
+        logo = ctk.CTkImage(
+            light_image = Image.open("images/Logo.png"),
+            dark_image = Image.open("images/Logo.png"),
+            size = (600, 600)
         )
-        main_label.place(
-            relx = 0,
-            rely = 0.2,
+        
+        logo_label = Label(
+            main_frame, 
+            text = "",
+            image = logo
+        )
+        logo_label.place(
+            relx = 0.5,
+            rely = 0.25,
+            anchor = "center",
             relwidth = 1,
-            relheight = 0.6
+            relheight = 0.5
         )
         
         main_buttons_frame = Frame(main_frame)
         main_buttons_frame.place(
-            relx = 0,
-            rely = 0.3,
+            relx = 0.5,
+            rely = 0.7,
+            anchor = "center",
             relwidth = 1,
-            relheight = 0.7
+            relheight = 0.5
         )
         
         midterm_performance_tracker_button = Button(
@@ -157,7 +158,7 @@ class HomePage(Frame):
         )
         midterm_performance_tracker_button.place(
             relx = 0.2,
-            rely = 0.25,
+            rely = 0.1,
             relwidth = 0.6,
             relheight = 0.15
         )
@@ -170,7 +171,7 @@ class HomePage(Frame):
         )
         tertiary_gpa_tracker_button.place(
             relx = 0.2,
-            rely = 0.6,
+            rely = 0.45,
             relwidth = 0.6,
             relheight = 0.15
         )
