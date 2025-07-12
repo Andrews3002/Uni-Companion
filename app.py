@@ -160,7 +160,7 @@ class HomePage(Frame):
             relx = 0.2,
             rely = 0.1,
             relwidth = 0.6,
-            relheight = 0.15
+            relheight = 0.13
         )
         
         tertiary_gpa_tracker_button = Button(
@@ -171,9 +171,9 @@ class HomePage(Frame):
         )
         tertiary_gpa_tracker_button.place(
             relx = 0.2,
-            rely = 0.45,
+            rely = 0.4,
             relwidth = 0.6,
-            relheight = 0.15
+            relheight = 0.13
         )
         
 # Midterm Performance Tracker App
@@ -282,7 +282,7 @@ class MidtermPerformanceTracker(Frame):
         logo = ctk.CTkImage(
             light_image = Image.open("images/Logo.png"),
             dark_image = Image.open("images/Logo.png"),
-            size = (300, 300)
+            size = (400, 400)
         )
         
         toolbarLogo_label = Label(
@@ -307,36 +307,42 @@ class MidtermPerformanceTracker(Frame):
             toolbarContent_frame, 
             text = "HOME",
             command = lambda:self.controller.open_page("HomePage"),
-            width = 250,
-            height = 50,
-            font = ("Impact", 20),
+            font = ("Impact", 20)
         )
-        home_button.pack(
-            pady = 30
+        home_button.place(
+            relx = 0.5,
+            rely = 0.1,
+            anchor = "center",
+            relwidth = 0.7,
+            relheight = 0.08
         )
         
         addCourse_button = Button(
             toolbarContent_frame, 
             text = "ADD COURSE",
             font = ("Impact", 20),
-            command = self.create_course_form_part1,
-            width = 250,
-            height = 50
+            command = self.create_course_form_part1
         )
-        addCourse_button.pack(
-            pady = 30
+        addCourse_button.place(
+            relx = 0.5,
+            rely = 0.3,
+            anchor = "center",
+            relwidth = 0.7,
+            relheight = 0.08
         )
         
         trackGoal_button = Button(
             toolbarContent_frame, 
             text = "TRACK GOAL",
             font = ("Impact", 20),
-            state = "disabled",
-            width = 250,
-            height = 50
+            state = "disabled"
         )
-        trackGoal_button.pack(
-            pady = 30
+        trackGoal_button.place(
+            relx = 0.5,
+            rely = 0.5,
+            anchor = "center",
+            relwidth = 0.7,
+            relheight = 0.08
         )
         
         def confirm_remove_course(course):
@@ -388,12 +394,14 @@ class MidtermPerformanceTracker(Frame):
             toolbarContent_frame,
             text = "REMOVE COURSE",
             font = ("Impact", 20),
-            state = "disabled",
-            width = 250,
-            height = 50
+            state = "disabled"
         )
-        removeCourse_button.pack(
-            pady = 30
+        removeCourse_button.place(
+            relx = 0.5,
+            rely = 0.7,
+            anchor = "center",
+            relwidth = 0.7,
+            relheight = 0.08
         )
         
         if selectedCourse:
@@ -406,7 +414,7 @@ class MidtermPerformanceTracker(Frame):
                 state = "normal",
                 command = lambda: confirm_remove_course(selectedCourse)
             )
-        
+            
         coursesList_frame = ScrollableFrame(
             self,
             fg_color = "#18016b"
@@ -914,35 +922,6 @@ class MidtermPerformanceTracker(Frame):
                         "<Button-1>", 
                         selectCourse_Handler(course)
                     )
-        
-        def resize_buttons(event):
-            frame_width = self.winfo_width()
-            frame_height = self.winfo_height()
-            
-            home_button.configure(
-                width = int(0.15 * frame_width),
-                height = int(0.05 * frame_height)
-            )
-
-            addCourse_button.configure(
-                width = int(0.15 * frame_width),
-                height = int(0.05 * frame_height)
-            )
-
-            trackGoal_button.configure(
-                width = int(0.15 * frame_width),
-                height = int(0.05 * frame_height)
-            )
-
-            removeCourse_button.configure(
-                width = int(0.15 * frame_width),
-                height = int(0.05 * frame_height)
-            )
-
-        self.bind(
-            "<Configure>",
-            resize_buttons
-        )
 
     def create_course_form_part1(self):
         #creating the CTkFrame form to enter the data for the new course
