@@ -529,11 +529,11 @@ class MidtermPerformanceTracker(Frame):
                 pady = 50,
             )
 
-            def resize_course_frame(event):
+            def resize_course_frame(event, frame = course_frame):
                 frame_height = self.winfo_height()
                 frame_width = self.winfo_width()
 
-                course_frame.configure(
+                frame.configure(
                     height = int(0.3 * frame_height),
                     width = int(0.7 * frame_width)
                 )
@@ -635,14 +635,13 @@ class MidtermPerformanceTracker(Frame):
                 )
                 
                 def setSize(event, frame = assignment_frame):
-                    frame_width = int(0.128 * coursePerformance_frame.winfo_width())
-                    frame_height = int(0.794 * coursePerformance_frame.winfo_height())
+                    frame_width = int(0.105 * self.winfo_width())
+                    frame_height = int(0.168 * self.winfo_height())
                     
                     frame.configure(
-                        width = 200,
-                        # width = frame_width,
+                        width = frame_width,
                         height = frame_height,
-                        border_width = 5,
+                        border_width = 3,
                         border_color = "black"
                     )
                 
@@ -791,16 +790,30 @@ class MidtermPerformanceTracker(Frame):
             for coursework in course["coursework_exams"].values():
                 coursework_frame = Frame(
                     coursePerformance_centeringFrame,
-                    width = 200,
-                    height = 170,
-                    # border_width = 5,
-                    # border_color = "black",
+                    border_width = 3,
+                    border_color = "black",
                     corner_radius = 10
                 )
                 coursework_frame.pack(
                     side = "left",
                     padx = 2,
                     pady = 2
+                )
+                
+                def setSize(event, frame = coursework_frame):
+                    frame_width = int(0.105 * self.winfo_width())
+                    frame_height = int(0.168 * self.winfo_height())
+                    
+                    frame.configure(
+                        width = frame_width,
+                        height = frame_height,
+                        border_width = 3,
+                        border_color = "black"
+                    )
+                
+                coursework_frame.bind(
+                    "<Configure>",
+                    setSize
                 )
                 
                 coursework_frame.bind(
