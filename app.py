@@ -1265,6 +1265,9 @@ class GoalTrackerPage(Frame):
     def refresh_gui(self):
         for widget in self.winfo_children():
             widget.destroy()
+
+        main_height = self.controller.winfo_height()
+        main_width = self.controller.winfo_width()
         
         def edit_goal():
             def update_goal_value():
@@ -1480,12 +1483,26 @@ class GoalTrackerPage(Frame):
                 border_width = 2,
                 border_color = "black",
                 fg_color = "#242424",
-                height = 150,
-                width = 1200,
+                height = int(0.15 * main_height),
+                width = int(0.7 * main_width),
                 corner_radius = 10
             )
             assessment_frame.pack(
                 pady = 20
+            )
+            
+            def resize(event, frame = assessment_frame):
+                frame_width = int(0.7 * self.controller.winfo_width())
+                frame_height = int (0.14 * self.controller.winfo_height())
+                    
+                frame.configure(
+                    height = frame_height,
+                    width = frame_width
+                )
+            
+            assessment_frame.bind(
+                "<Configure>",
+                resize
             )
             
             assessmentHeader_frame = Frame(assessment_frame)
@@ -1582,12 +1599,26 @@ class GoalTrackerPage(Frame):
                 border_width = 2,
                 border_color = "black",
                 fg_color = "#242424",
-                height = 150,
-                width = 1200,
+                height = int(0.15 * main_height),
+                width = int(0.7 * main_width),
                 corner_radius = 10
             )
             assessment_frame.pack(
                 pady = 20
+            )
+            
+            def resize(event, frame = assessment_frame):
+                frame_width = int(0.7 * self.controller.winfo_width())
+                frame_height = int (0.14 * self.controller.winfo_height())
+                    
+                frame.configure(
+                    height = frame_height,
+                    width = frame_width
+                )
+            
+            assessment_frame.bind(
+                "<Configure>",
+                resize
             )
             
             assessmentHeader_frame = Frame(assessment_frame)
@@ -1682,12 +1713,26 @@ class GoalTrackerPage(Frame):
             border_width = 2,
             border_color = "black",
             fg_color = "#242424",
-            height = 150,
-            width = 1200,
+            height = int(0.15 * main_height),
+            width = int(0.7 * main_width),
             corner_radius = 10
         )
         final_frame.pack(
             pady = 20
+        )
+        
+        def resize(event):
+            frame_width = int(0.7 * self.controller.winfo_width())
+            frame_height = int (0.14 * self.controller.winfo_height())
+                
+            final_frame.configure(
+                height = frame_height,
+                width = frame_width
+            )
+        
+        final_frame.bind(
+            "<Configure>",
+            resize
         )
         
         finalHeader_frame = Frame(final_frame)
