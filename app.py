@@ -223,35 +223,35 @@ class MidtermPerformanceTracker(Frame):
             coursework_exams = {}
             
             assignments["assignment_1"] = {
-                "name": "assignment 1",
+                "name": "Assignment 1",
                 "status": "WAITING",
                 "score": 0.0,
                 "weightage": 0.06     
             }
             
             assignments["assignment_2"] = {
-                "name": "assignment 2",
+                "name": "Assignment 2",
                 "status": "WAITING",
                 "score": 0.00,
                 "weightage": 0.07     
             }
             
             assignments["assignment_3"] = {
-                "name": "assignment 3",
+                "name": "Assignment 3",
                 "status": "WAITING",
                 "score": 0.0,
                 "weightage": 0.07     
             }
                     
             coursework_exams["coursework_exam_1"] = {
-                "name": "coursework exam 1",
+                "name": "Coursework Exam 1",
                 "status": "WAITING",
                 "score": 0.0,
                 "weightage": 0.15     
             }
             
             coursework_exams["coursework_exam_2"] = {
-                "name": "coursework exam 2",
+                "name": "Coursework Exam 2",
                 "status": "WAITING",
                 "score": 0.0,
                 "weightage": 0.15     
@@ -296,7 +296,7 @@ class MidtermPerformanceTracker(Frame):
             
         toolbar_frame = Frame(
             self,
-            fg_color = "#242323"
+            fg_color = "#242222"
         )
         toolbar_frame.place(
             relx = 0,
@@ -544,7 +544,7 @@ class MidtermPerformanceTracker(Frame):
                     coursesList_frame,
                     border_width = 3,
                     border_color = "#f5007a",
-                    fg_color = "#242323",
+                    fg_color = "#242222",
                     height = int(0.3 * main_height),
                     width = int(0.7 * main_width),
                     corner_radius = 20
@@ -554,7 +554,7 @@ class MidtermPerformanceTracker(Frame):
                     coursesList_frame,
                     border_width = 2,
                     border_color = "black",
-                    fg_color = "#242424",
+                    fg_color = "#242222",
                     height = int(0.3 * main_height),
                     width = int(0.7 * main_width),
                     corner_radius = 20
@@ -1182,7 +1182,7 @@ class MidtermPerformanceTracker(Frame):
             
                 for i in range(1,num_of_assignments+1):
                     assignments["assignment_" + str(i)] = {
-                        "name": "assignment " + str(i),
+                        "name": "Assignment " + str(i),
                         "status": "WAITING",
                         "score": 0.0,
                         "weightage": 0.0     
@@ -1196,7 +1196,7 @@ class MidtermPerformanceTracker(Frame):
             
                 for i in range(1,num_of_coursework_exams+1):
                     coursework_exams["coursework_exam_" + str(i)] = {
-                        "name": "coursework exam " + str(i),
+                        "name": "Coursework Exam " + str(i),
                         "status": "WAITING",
                         "score": 0.0,
                         "weightage": 0.0     
@@ -1335,7 +1335,7 @@ class GoalTrackerPage(Frame):
             
         navbar_frame = Frame(
             self,
-            fg_color = "#242323"
+            fg_color = "#242222"
         )
         navbar_frame.place(
             relx = 0,
@@ -1482,7 +1482,7 @@ class GoalTrackerPage(Frame):
                 content_frame,
                 border_width = 2,
                 border_color = "black",
-                fg_color = "#242424",
+                fg_color = "#242222",
                 height = int(0.15 * main_height),
                 width = int(0.7 * main_width),
                 corner_radius = 10
@@ -1598,7 +1598,7 @@ class GoalTrackerPage(Frame):
                 content_frame,
                 border_width = 2,
                 border_color = "black",
-                fg_color = "#242424",
+                fg_color = "#242222",
                 height = int(0.15 * main_height),
                 width = int(0.7 * main_width),
                 corner_radius = 10
@@ -1712,7 +1712,7 @@ class GoalTrackerPage(Frame):
             content_frame,
             border_width = 2,
             border_color = "black",
-            fg_color = "#242424",
+            fg_color = "#242222",
             height = int(0.15 * main_height),
             width = int(0.7 * main_width),
             corner_radius = 10

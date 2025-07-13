@@ -19,8 +19,8 @@
 
     "CTkFrame": {
         "corner_radius": 0,
-        "fg_color": ["#2e2e3f", "#242323"],
-        "top_fg_color": ["#2e2e3f", "#242323"],
+        "fg_color": ["#2e2e3f", "#242222"],
+        "top_fg_color": ["#2e2e3f", "#242222"],
         "border_color": ["#444444", "#000000"],
         "border_width": 0
     },
