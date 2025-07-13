@@ -1527,7 +1527,7 @@ class GoalTrackerPage(Frame):
             
             assessmentContent_frame = Frame(assessment_frame)
             assessmentContent_frame.place(
-                relx = 0.3505,
+                relx = 0.355,
                 rely = 0.1,
                 relwidth = 0.6395,
                 relheight = 0.8
@@ -1643,7 +1643,7 @@ class GoalTrackerPage(Frame):
             
             assessmentContent_frame = Frame(assessment_frame)
             assessmentContent_frame.place(
-                relx = 0.3505,
+                relx = 0.355,
                 rely = 0.1,
                 relwidth = 0.6395,
                 relheight = 0.8
@@ -1757,7 +1757,7 @@ class GoalTrackerPage(Frame):
         
         finalContent_frame = Frame(final_frame)
         finalContent_frame.place(
-            relx = 0.3505,
+            relx = 0.355,
             rely = 0.1,
             relwidth = 0.6395,
             relheight = 0.8
