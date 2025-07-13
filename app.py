@@ -426,6 +426,36 @@ class MidtermPerformanceTracker(Frame):
             relheight = 0.08
         )
         
+        def width_resize(event):
+            new_width = self.controller.winfo_width()
+            new_size = int(new_width/4.8)
+            new_font_size = int(new_width/96)
+            
+            logo.configure(
+                size = (new_size, new_size)
+            )
+            
+            home_button.configure(
+                font = ("Impact", new_font_size)
+            )
+            
+            addCourse_button.configure(
+                font = ("Impact", new_font_size)
+            )
+            
+            trackGoal_button.configure(
+                font = ("Impact", new_font_size)
+            )
+            
+            removeCourse_button.configure(
+                font = ("Impact", new_font_size)
+            )
+            
+        self.bind(
+            "<Configure>",
+            width_resize
+        )
+        
         if selectedCourse:
             trackGoal_button.configure(
                 state = "normal",
@@ -550,20 +580,6 @@ class MidtermPerformanceTracker(Frame):
             course_frame.pack(
                 pady = 50,
             )
-
-            def resize_course_frame(event, frame = course_frame):
-                frame_height = self.winfo_height()
-                frame_width = self.winfo_width()
-
-                frame.configure(
-                    height = int(0.3 * frame_height),
-                    width = int(0.7 * frame_width)
-                )
-
-            self.bind(
-                "<Configure>",
-                resize_course_frame
-            )
     
             def selectCourse_Handler(course):
                 def selectCourse(event):
@@ -642,6 +658,26 @@ class MidtermPerformanceTracker(Frame):
             coursePerformance_centeringFrame.bind(
                 "<Button-1>", 
                 selectCourse_Handler(course)
+            )
+            
+            def resize_course_frame(event, frame = course_frame):
+                frame_height = self.winfo_height()
+                frame_width = self.winfo_width()
+                
+                new_font_size = int(frame_width/48)
+
+                frame.configure(
+                    height = int(0.3 * frame_height),
+                    width = int(0.7 * frame_width)
+                )
+                
+                courseName_label.configure(
+                    font = ("Impact", new_font_size)
+                )
+
+            self.bind(
+                "<Configure>",
+                resize_course_frame
             )
             
             for assignment in course["assignments"].values():
@@ -741,6 +777,32 @@ class MidtermPerformanceTracker(Frame):
                         relheight = 0.25
                     )
                     
+                    def resize_elements(event, title = assignment_title_Label, score = score_label, update = update_button, reset = reset_button):
+                        new_width = self.controller.winfo_width()
+                        title_size = int(new_width/96)
+                        content_size = int(new_width/106.667)
+                        
+                        title.configure(
+                            font = ("Impact", title_size)
+                        )
+                        
+                        score.configure(
+                            font = ("Impact", content_size)
+                        )
+                        
+                        update.configure(
+                            font = ("Impact", content_size)
+                        )
+                        
+                        reset.configure(
+                            font = ("Impact", content_size)
+                        )
+                        
+                    self.bind(
+                        "<Configure>",
+                        resize_elements
+                    )
+                    
                 else:
                     assignmentTitle_frame = Frame(assignment_frame)
                     assignmentTitle_frame.place(
@@ -796,7 +858,7 @@ class MidtermPerformanceTracker(Frame):
                         selectCourse_Handler(course)
                     )
                 
-                    score = Label(
+                    score_label = Label(
                         assignmentScore_centeringFrame, 
                         text = str(
                             round(
@@ -806,11 +868,29 @@ class MidtermPerformanceTracker(Frame):
                         )+"%",
                         font = ("Impact", 20)
                     )
-                    score.pack()
+                    score_label.pack()
                     
-                    score.bind(
+                    score_label.bind(
                         "<Button-1>", 
                         selectCourse_Handler(course)
+                    )
+         
+                    def resize_elements(event, title = assignment_title_Label, score = score_label):
+                        new_width = self.controller.winfo_width()
+                        title_size = int(new_width/96)
+                        content_size = int(new_width/106.667)
+                        
+                        title.configure(
+                            font = ("Impact", title_size)
+                        )
+                        
+                        score.configure(
+                            font = ("Impact", content_size)
+                        )
+                    
+                    self.bind(
+                        "<Configure>",
+                        resize_elements
                     )
             
             for coursework in course["coursework_exams"].values():
@@ -908,6 +988,33 @@ class MidtermPerformanceTracker(Frame):
                         relwidth = 0.8,
                         relheight = 0.25
                     )
+                    
+                    def resize_elements(event, title = courseworkTitle_label, score = score_label, update = update_button, reset = reset_button):
+                        new_width = self.controller.winfo_width()
+                        title_size = int(new_width/96)
+                        content_size = int(new_width/106.667)
+                        
+                        title.configure(
+                            font = ("Impact", title_size)
+                        )
+                        
+                        score.configure(
+                            font = ("Impact", content_size)
+                        )
+                        
+                        update.configure(
+                            font = ("Impact", content_size)
+                        )
+                        
+                        reset.configure(
+                            font = ("Impact", content_size)
+                        )
+                        
+                    self.bind(
+                        "<Configure>",
+                        resize_elements
+                    )
+                    
                 else:
                     courseworkTitle_frame = Frame(coursework_frame)
                     courseworkTitle_frame.place(
@@ -978,6 +1085,24 @@ class MidtermPerformanceTracker(Frame):
                     score_label.bind(
                         "<Button-1>", 
                         selectCourse_Handler(course)
+                    )
+                    
+                    def resize_elements(event, title = courseworkTitle_label, score = score_label):
+                        new_width = self.controller.winfo_width()
+                        title_size = int(new_width/96)
+                        content_size = int(new_width/106.667)
+                        
+                        title.configure(
+                            font = ("Impact", title_size)
+                        )
+                        
+                        score.configure(
+                            font = ("Impact", content_size)
+                        )
+                        
+                    self.bind(
+                        "<Configure>",
+                        resize_elements
                     )
 
     def create_course_form_part1(self):
