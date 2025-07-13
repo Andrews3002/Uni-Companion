@@ -90,8 +90,8 @@ class App(ctk.CTk):
 
 class HomePage(Frame):
     def __init__(self, parent, controller):
-        super().__init__(parent)
-            
+        super().__init__(parent)    
+        
         home_wallpaper = ctk.CTkImage(
             light_image = Image.open("images/HomeWallpaper.jpg"),
             dark_image = Image.open("images/HomeWallpaper.jpg"),
@@ -301,10 +301,14 @@ class MidtermPerformanceTracker(Frame):
             relheight = 0.3
         )
         
+        window_width = self.controller.winfo_width()
+        new_size = int(window_width/4.8)
+        new_font_size = int(window_width/96)
+        
         logo = ctk.CTkImage(
             light_image = Image.open("images/Logo.png"),
             dark_image = Image.open("images/Logo.png"),
-            size = (400, 400)
+            size = (new_size, new_size)
         )
         
         toolbarLogo_label = Label(
@@ -329,7 +333,7 @@ class MidtermPerformanceTracker(Frame):
             toolbarContent_frame, 
             text = "HOME",
             command = lambda:self.controller.open_page("HomePage"),
-            font = ("Impact", 20)
+            font = ("Impact", new_font_size)
         )
         home_button.place(
             relx = 0.5,
@@ -342,7 +346,7 @@ class MidtermPerformanceTracker(Frame):
         addCourse_button = Button(
             toolbarContent_frame, 
             text = "ADD COURSE",
-            font = ("Impact", 20),
+            font = ("Impact", new_font_size),
             command = self.create_course_form_part1
         )
         addCourse_button.place(
@@ -356,7 +360,7 @@ class MidtermPerformanceTracker(Frame):
         trackGoal_button = Button(
             toolbarContent_frame, 
             text = "TRACK GOAL",
-            font = ("Impact", 20),
+            font = ("Impact", new_font_size),
             state = "disabled"
         )
         trackGoal_button.place(
@@ -415,7 +419,7 @@ class MidtermPerformanceTracker(Frame):
         removeCourse_button = Button(
             toolbarContent_frame,
             text = "REMOVE COURSE",
-            font = ("Impact", 20),
+            font = ("Impact", new_font_size),
             state = "disabled"
         )
         removeCourse_button.place(
@@ -606,9 +610,11 @@ class MidtermPerformanceTracker(Frame):
                 selectCourse_Handler(course)
             )
             
+            course_name_size = int(window_width/48)
+            
             courseName_label = Label(
                 courseName_frame,
-                font = ("Impact", 40),
+                font = ("Impact", course_name_size),
                 text = str(course["name"]) + " (" + str(course["id"]) + ")"
             )
             courseName_label.pack()
@@ -717,10 +723,13 @@ class MidtermPerformanceTracker(Frame):
                     
                     assignmentTitle_centeringFrame = Frame(assignmentTitle_frame)
                     assignmentTitle_centeringFrame.pack(expand = True)
-                        
+                    
+                    assessment_size = int(window_width/96)
+                    content_size = int(window_width/106.667)
+                    
                     assignment_title_Label = Label(
                         assignmentTitle_centeringFrame,
-                        font = ("Impact", 20),
+                        font = ("Impact", assessment_size),
                         text = str(assignment["name"])
                     )
                     assignment_title_Label.pack()
@@ -735,7 +744,7 @@ class MidtermPerformanceTracker(Frame):
                     
                     score_label = Label(
                         assignmentScore_frame,
-                        font = ("Impact", 18),
+                        font = ("Impact", content_size),
                         text = str(
                             round(
                                 ((assignment["score"]/assignment["weightage"])*100),
@@ -752,7 +761,7 @@ class MidtermPerformanceTracker(Frame):
                     update_button = Button(
                         assignmentScore_frame, 
                         text = "Update",
-                        font = ("Impact", 18), 
+                        font = ("Impact", content_size), 
                         command = lambda assignment = assignment: update_score(assignment)
                     )
                     update_button.place(
@@ -766,7 +775,7 @@ class MidtermPerformanceTracker(Frame):
                     reset_button = Button(
                         assignmentScore_frame,
                         text = "Reset",
-                        font = ("Impact", 18),
+                        font = ("Impact", content_size),
                         command = lambda assignment = assignment: reset_score(assignment)
                     )
                     reset_button.place(
@@ -825,10 +834,13 @@ class MidtermPerformanceTracker(Frame):
                         selectCourse_Handler(course)
                     )
                     
+                    assessment_size = int(window_width/96)
+                    content_size = int(window_width/106.667)
+                    
                     assignment_title_Label = Label(
                         assignmentTitle_centeringFrame, 
                         text = str(assignment["name"]),
-                        font = ("Impact", 18)
+                        font = ("Impact", assessment_size)
                     )
                     assignment_title_Label.pack()
                 
@@ -866,7 +878,7 @@ class MidtermPerformanceTracker(Frame):
                                 1
                             )
                         )+"%",
-                        font = ("Impact", 20)
+                        font = ("Impact", content_size)
                     )
                     score_label.pack()
                     
@@ -930,10 +942,13 @@ class MidtermPerformanceTracker(Frame):
                     courseworkTitle_centeringFrame = Frame(courseworkTitle_frame)
                     courseworkTitle_centeringFrame.pack(expand = True)
                     
+                    assessment_size = int(window_width/96)
+                    content_size = int(window_width/106.667)
+                    
                     courseworkTitle_label = Label(
                         courseworkTitle_centeringFrame, 
                         text = str(coursework["name"]),
-                        font = ("Impact", 20),
+                        font = ("Impact", assessment_size),
                     )
                     courseworkTitle_label.pack()
                     
@@ -953,7 +968,7 @@ class MidtermPerformanceTracker(Frame):
                                 1
                             )
                         )+"%",
-                        font = ("Impact", 18)
+                        font = ("Impact", content_size)
                     )
                     score_label.place(
                         relx = 0.5,
@@ -964,7 +979,7 @@ class MidtermPerformanceTracker(Frame):
                     update_button = Button(
                         courseworkScore_frame, 
                         text = "Update",
-                        font = ("Impact", 18),
+                        font = ("Impact", content_size),
                         command = lambda coursework = coursework: update_score(coursework)
                     )
                     update_button.place(
@@ -978,7 +993,7 @@ class MidtermPerformanceTracker(Frame):
                     reset_button = Button(
                         courseworkScore_frame,
                         text = "Reset",
-                        font = ("Impact", 20),
+                        font = ("Impact", content_size),
                         command = lambda coursework = coursework: reset_score(coursework)
                     )
                     reset_button.place(
@@ -1037,10 +1052,13 @@ class MidtermPerformanceTracker(Frame):
                         selectCourse_Handler(course)
                     )
                     
+                    assessment_size = int(window_width/96)
+                    content_size = int(window_width/106.667)
+                    
                     courseworkTitle_label = Label(
                         courseworkTitle_centeringFrame, 
                         text = str(coursework["name"]),
-                        font = ("Impact", 20)
+                        font = ("Impact", assessment_size)
                     )
                     courseworkTitle_label.pack()
                     
@@ -1078,7 +1096,7 @@ class MidtermPerformanceTracker(Frame):
                                 1
                             )
                         )+"%",
-                        font = ("Impact", 20)
+                        font = ("Impact", content_size)
                     )
                     score_label.pack()
                     
