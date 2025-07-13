@@ -91,7 +91,7 @@ class App(ctk.CTk):
 class HomePage(Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
-        
+            
         home_wallpaper = ctk.CTkImage(
             light_image = Image.open("images/HomeWallpaper.jpg"),
             dark_image = Image.open("images/HomeWallpaper.jpg"),
@@ -176,6 +176,28 @@ class HomePage(Frame):
             relheight = 0.13
         )
         
+        def width_resize(event):
+            new_width = controller.winfo_width()
+            new_size = int(new_width/3.2)
+            new_font_size = int(new_width/96)
+            
+            logo.configure(
+                size = (new_size, new_size)
+            )
+            
+            midterm_performance_tracker_button.configure(
+                font = ("Impact", new_font_size)
+            )
+            
+            tertiary_gpa_tracker_button.configure(
+                font = ("Impact", new_font_size)
+            )
+            
+        self.bind(
+            "<Configure>",
+            width_resize
+        )
+ 
 # Midterm Performance Tracker App
 class MidtermPerformanceTracker(Frame):
     def __init__(self, parent, controller):
