@@ -31,40 +31,6 @@ class ScrollableFrame(ctk.CTkScrollableFrame):
         defaults.update(variants)
         super().__init__(parent, **defaults)
 
-#TODO
-class HorizontalScrollableFrame(ctk.CTkFrame):
-    def __init__(self, master, **kwargs):
-        super().__init__(master, **kwargs)
-
-        # Create canvas and scrollbar
-        self.canvas = ctk.CTkCanvas(self, height=200)
-        self.scrollbar = ctk.CTkScrollbar(self, orientation="horizontal", command=self.canvas.xview)
-        self.canvas.configure(xscrollcommand=self.scrollbar.set)
-
-        self.scrollable_frame = Frame(self.canvas)
-
-        # Bind to resize scrollregion when contents change
-        self.scrollable_frame.bind(
-            "<Configure>",
-            lambda e: self.canvas.configure(
-                scrollregion=self.canvas.bbox("all")
-            )
-        )
-
-        # Embed frame in canvas
-        self.window = self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
-
-        # Layout
-        self.canvas.pack(side="top", fill="both", expand=True)
-        self.scrollbar.pack(side="bottom", fill="x")
-
-        # Allow resizing properly
-        self.scrollable_frame.bind("<Configure>", self._on_frame_configure)
-
-    def _on_frame_configure(self, event):
-        # Resize the embedded window to match scrollable_frame's height
-        self.canvas.itemconfig(self.window, height=event.height)
-
 class Label(ctk.CTkLabel):
     def __init__(self, parent, **variants):
         defaults = {
