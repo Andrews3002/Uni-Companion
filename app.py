@@ -5,6 +5,18 @@ import customtkinter as ctk
 from PIL import Image, ImageTk
 import ctypes
 
+# Windows API constants
+GWL_STYLE = -16
+WS_MAXIMIZEBOX = 0x00010000
+WS_THICKFRAME = 0x00040000
+
+def disable_maximize_button(hwnd):
+    style = ctypes.windll.user32.GetWindowLongW(hwnd, GWL_STYLE)
+    style &= ~WS_MAXIMIZEBOX  # Disable maximize button
+    style &= ~WS_THICKFRAME   # Disable resizing via border
+    ctypes.windll.user32.SetWindowLongW(hwnd, GWL_STYLE, style)
+    ctypes.windll.user32.SetWindowPos(hwnd, None, 0, 0, 0, 0, 0x0001 | 0x0002 | 0x0020)
+
 myappid = 'uni-companion.gui.1.0'
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
@@ -50,7 +62,7 @@ class App(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title('Uni Companion')
-        self.after(10, lambda: self.state('zoomed'))
+        self.state('zoomed')
         
         self.iconbitmap("Logo.ico") 
                         
@@ -83,6 +95,13 @@ class App(ctk.CTk):
             self.pages[ClassPage.__name__] = page
             
         self.open_page("HomePage")
+        
+        self.update_idletasks()
+
+        hwnd = ctypes.windll.user32.GetParent(self.winfo_id())
+        disable_maximize_button(hwnd)
+
+        self.resizable(False, False)
         
     def open_page(self, page_name):
         page = self.pages[page_name]
@@ -1399,6 +1418,8 @@ class GoalTrackerPage(Frame):
 
         main_height = self.controller.winfo_height()
         main_width = self.controller.winfo_width()
+        
+        
         
         new_size = int(main_width/4.8)
         new_font_size = int(main_width/96)
