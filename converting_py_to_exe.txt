@@ -1,2 +1,0 @@
-//creating the executable file out of the "app.py" script with the icon "Logo.ico"
-pyinstaller --onefile --windowed --noconsole --icon=Logo.ico app.py --distpath .

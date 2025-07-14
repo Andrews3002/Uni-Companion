@@ -87,10 +87,10 @@ class App(ctk.CTk):
 
         self.after(100, finalize)
         
-        self.iconbitmap("Logo.ico") 
+        self.iconbitmap("assets/images/Logo.ico") 
                         
         ctk.set_appearance_mode("dark")
-        ctk.set_default_color_theme("mytheme.json")
+        ctk.set_default_color_theme("assets/mytheme.json")
         
         self.content_container = Frame(self)
         self.content_container.place(
@@ -128,8 +128,8 @@ class HomePage(Frame):
         super().__init__(parent)    
         
         home_wallpaper = ctk.CTkImage(
-            light_image = Image.open("images/HomeWallpaper.jpg"),
-            dark_image = Image.open("images/HomeWallpaper.jpg"),
+            light_image = Image.open("assets/images/HomeWallpaper.jpg"),
+            dark_image = Image.open("assets/images/HomeWallpaper.jpg"),
             size = (1920, 1080)
         )
         
@@ -158,8 +158,8 @@ class HomePage(Frame):
         )
         
         logo = ctk.CTkImage(
-            light_image = Image.open("images/Logo.png"),
-            dark_image = Image.open("images/Logo.png"),
+            light_image = Image.open("assets/images/Logo.png"),
+            dark_image = Image.open("assets/images/Logo.png"),
             size = (600, 600)
         )
         
@@ -248,8 +248,8 @@ class MidtermPerformanceTracker(Frame):
         for widget in self.winfo_children():
             widget.destroy()
         
-        if os.path.exists("courses.json") and os.path.getsize("courses.json") > 0:     
-            with open("courses.json", "r") as data:
+        if os.path.exists("assets/courses.json") and os.path.getsize("assets/courses.json") > 0:     
+            with open("assets/courses.json", "r") as data:
                 self.courses = json.load(data)    
         
         main_width = self.winfo_width()
@@ -273,7 +273,7 @@ class MidtermPerformanceTracker(Frame):
         def remove_course(course):
                 self.courses.pop(str(course["id"]), None)
                 
-                with open("courses.json", "w") as w:
+                with open("assets/courses.json", "w") as w:
                     json.dump(self.courses, w, indent=4)
                 
                 self.refresh_ui()
@@ -302,8 +302,8 @@ class MidtermPerformanceTracker(Frame):
         new_font_size = int(window_width/96)
         
         logo = ctk.CTkImage(
-            light_image = Image.open("images/Logo.png"),
-            dark_image = Image.open("images/Logo.png"),
+            light_image = Image.open("assets/images/Logo.png"),
+            dark_image = Image.open("assets/images/Logo.png"),
             size = (new_size, new_size)
         )
         
@@ -534,7 +534,7 @@ class MidtermPerformanceTracker(Frame):
                     assessment["score"] = score
                     assessment["status"] = "GRADED"
                     
-                    with open("courses.json", "w") as w:
+                    with open("assets/courses.json", "w") as w:
                         json.dump(self.courses, w, indent=4)
                     
                     form.destroy()
@@ -560,7 +560,7 @@ class MidtermPerformanceTracker(Frame):
                 assessment["score"] = 0.0
                 assessment["status"] = "WAITING"
                 
-                with open("courses.json", "w") as w:
+                with open("assets/courses.json", "w") as w:
                     json.dump(self.courses, w, indent=4)
                 
                 self.refresh_ui()
@@ -1395,7 +1395,7 @@ class MidtermPerformanceTracker(Frame):
                 flash_error("Your assessments weightage (" + str(int(assessment_sum * 100)) + "%) and final weightage (" + str(int(final_weightage * 100)) + "%)" + " does not add up to 100%")
                 return
             
-            with open("courses.json", "w") as w:
+            with open("assets/courses.json", "w") as w:
                 json.dump(self.courses, w, indent=4)
             
             form.destroy()
@@ -1433,8 +1433,8 @@ class GoalTrackerPage(Frame):
         for widget in self.winfo_children():
             widget.destroy()
 
-        if os.path.exists("courses.json") and os.path.getsize("courses.json") > 0:     
-            with open("courses.json", "r") as data:
+        if os.path.exists("assets/courses.json") and os.path.getsize("assets/courses.json") > 0:     
+            with open("assets/courses.json", "r") as data:
                 self.courses = json.load(data)
                 
         self.course = self.courses[self.course["id"]]
@@ -1494,7 +1494,7 @@ class GoalTrackerPage(Frame):
                 
                 self.courses[self.course["id"]]["goal"] = goal/100
                 
-                with open("courses.json", "w") as w:
+                with open("assets/courses.json", "w") as w:
                     json.dump(self.courses, w, indent=4)
                 
                 form.destroy()
@@ -1516,7 +1516,6 @@ class GoalTrackerPage(Frame):
                 command = form.destroy
             ).pack()
             
-        
         navbar_frame = Frame(
             self,
             fg_color = "#242222"
@@ -1568,8 +1567,8 @@ class GoalTrackerPage(Frame):
         )
         
         logo = ctk.CTkImage(
-            light_image = Image.open("images/Logo.png"),
-            dark_image = Image.open("images/Logo.png"),
+            light_image = Image.open("assets/images/Logo.png"),
+            dark_image = Image.open("assets/images/Logo.png"),
             size = (new_size, new_size)
         )
         
@@ -1616,11 +1615,24 @@ class GoalTrackerPage(Frame):
             relheight = 0.08
         )
         
+        def open_midterm_performance_tracker_page():
+            page = MidtermPerformanceTracker(
+                parent = self.parent, 
+                controller = self.controller
+            )
+            page.place(
+                relx = 0,
+                rely = 0,
+                relwidth = 1,
+                relheight = 1
+            )
+            page.tkraise()
+        
         Button(
             navButtons_frame, 
             text = "BACK",
             font = ("Impact", new_font_size),
-            command = lambda:self.controller.open_page("MidtermPerformanceTracker")
+            command = open_midterm_performance_tracker_page
         ).place(
             relx = 0.5,
             rely = 0.3,
@@ -1995,7 +2007,7 @@ class GoalTrackerPage(Frame):
                 
                 self.courses[self.course["id"]]["goal"] = goal/100
                 
-                with open("courses.json", "w") as w:
+                with open("assets/courses.json", "w") as w:
                     json.dump(self.courses, w, indent=4)
                 
                 form.destroy()
