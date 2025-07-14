@@ -4,13 +4,12 @@ import tkinter as tk
 import customtkinter as ctk
 from PIL import Image, ImageTk
 import ctypes
+import json
 
-# Windows constants
 GWL_STYLE = -16
 WS_MAXIMIZEBOX = 0x00010000
 WS_THICKFRAME = 0x00040000
 
-# Get usable screen size (not covering taskbar)
 def get_work_area():
     class RECT(ctypes.Structure):
         _fields_ = [("left", ctypes.c_long),
@@ -119,8 +118,7 @@ class App(ctk.CTk):
             self.pages[ClassPage.__name__] = page
             
         self.open_page("HomePage")
-        
-        
+             
     def open_page(self, page_name):
         page = self.pages[page_name]
         page.tkraise()
@@ -242,62 +240,18 @@ class MidtermPerformanceTracker(Frame):
         self.parent = parent
         self.controller = controller
         self.courses = {}
-        
-        if self.courses == {}:
-            assignments = {}
-            coursework_exams = {}
             
-            assignments["assignment_1"] = {
-                "name": "Assignment 1",
-                "status": "WAITING",
-                "score": 0.0,
-                "weightage": 0.06     
-            }
-            
-            assignments["assignment_2"] = {
-                "name": "Assignment 2",
-                "status": "WAITING",
-                "score": 0.00,
-                "weightage": 0.07     
-            }
-            
-            assignments["assignment_3"] = {
-                "name": "Assignment 3",
-                "status": "WAITING",
-                "score": 0.0,
-                "weightage": 0.07     
-            }
-                    
-            coursework_exams["coursework_exam_1"] = {
-                "name": "Coursework Exam 1",
-                "status": "WAITING",
-                "score": 0.0,
-                "weightage": 0.15     
-            }
-            
-            coursework_exams["coursework_exam_2"] = {
-                "name": "Coursework Exam 2",
-                "status": "WAITING",
-                "score": 0.0,
-                "weightage": 0.15     
-            }
-            
-            self.courses["MATH101"] = {
-                "name": "Mathematics",
-                "id": "MATH101",
-                "final_weightage": 0.5,
-                "assignments": assignments,
-                "coursework_exams": coursework_exams,
-                "goal": 0.5
-            }
-        
         self.refresh_ui()
     
     def refresh_ui(self, selectedCourse = None):
         #going through each widget that is a child of this widget in this case this widget is("self" which is "MidtermPerformanceTracker(Frame)")
         for widget in self.winfo_children():
             widget.destroy()
-            
+        
+        if os.path.exists("courses.json") and os.path.getsize("courses.json") > 0:     
+            with open("courses.json", "r") as data:
+                self.courses = json.load(data)    
+        
         main_width = self.winfo_width()
         main_height = self.winfo_height()
 
@@ -317,6 +271,10 @@ class MidtermPerformanceTracker(Frame):
             
         def remove_course(course):
                 self.courses.pop(str(course["id"]), None)
+                
+                with open("courses.json", "w") as w:
+                    json.dump(self.courses, w, indent=4)
+                
                 self.refresh_ui()
             
         toolbar_frame = Frame(
@@ -416,7 +374,7 @@ class MidtermPerformanceTracker(Frame):
                 form.grab_set()
                 form.focus()
                 form.attributes("-topmost", True)
-                
+            
             width = 700
             height = 150
                 
@@ -1169,7 +1127,7 @@ class MidtermPerformanceTracker(Frame):
             form.grab_set()
             form.focus()
             form.attributes("-topmost", True)
-            
+                        
         width = 400
         height = 380
             
@@ -1399,7 +1357,10 @@ class MidtermPerformanceTracker(Frame):
                     weightage = weightage / 100
                     
                 self.courses[course_id]["coursework_exams"]["coursework_exam_" + str(i)]["weightage"] = weightage
-                
+            
+            with open("courses.json", "w") as w:
+                json.dump(self.courses, w, indent=4)
+            
             form.destroy()
             
             #updating the main page to always have an up to date list of courses after adding new courses
