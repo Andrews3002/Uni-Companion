@@ -1242,7 +1242,7 @@ class MidtermPerformanceTracker(Frame):
             form.focus()
             form.attributes("-topmost", True)
             
-        width = 600
+        width = 900
         height = 380
             
         # Get the screen dimensions
@@ -1261,6 +1261,15 @@ class MidtermPerformanceTracker(Frame):
             fill = "both",
             expand = "true"
         )
+        
+        error_label = Label(
+            scrollable_area,
+            text = "",
+            font = ("Impact", 20),
+            text_color = "red"
+        )
+        error_label.pack()
+        error_label.forget()
         
         assignment_weightages = []
         coursework_exam_weightages = []
@@ -1307,8 +1316,9 @@ class MidtermPerformanceTracker(Frame):
             )
             percent_sign.pack(side = "left")
             
-            coursework_exam_weightages.append(weightage)
-            
+            coursework_exam_weightages.append(weightage) 
+        
+        
         #populating all the assignments and coursework exams of the created course with their relevant weightage values 
         def submit_form():
             #initializing all the assignments dictionary for later updates
@@ -1353,10 +1363,14 @@ class MidtermPerformanceTracker(Frame):
                 "goal": 0.5
             }
             
+            assessment_sum = 0.0
+            
             for i in range(1, num_of_assignments+1):
                 weightage = float(assignment_weightages[i-1].get())
                 if weightage > 1:
                     weightage = weightage / 100
+                    
+                assessment_sum = assessment_sum + weightage
                     
                 self.courses[course_id]["assignments"]["assignment_"+str(i)]["weightage"] = weightage
             
@@ -1365,7 +1379,21 @@ class MidtermPerformanceTracker(Frame):
                 if weightage > 1:
                     weightage = weightage / 100
                     
+                assessment_sum = assessment_sum + weightage
+                    
                 self.courses[course_id]["coursework_exams"]["coursework_exam_" + str(i)]["weightage"] = weightage
+            
+            def flash_error(msg):
+                error_label.configure(
+                    text=msg
+                )
+                error_label.pack()
+                form.after(5000, lambda: error_label.pack_forget()) 
+                
+            
+            if (final_weightage + assessment_sum) != 1.0:
+                flash_error("Your assessments weightage (" + str(int(assessment_sum * 100)) + "%) and final weightage (" + str(int(final_weightage * 100)) + "%)" + " does not add up to 100%")
+                return
             
             with open("courses.json", "w") as w:
                 json.dump(self.courses, w, indent=4)
