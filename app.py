@@ -31,6 +31,13 @@ def disable_maximize(hwnd):
 myappid = 'uni-companion.gui.1.0'
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
+class Entry(ctk.CTkEntry):
+    def __init__(self, parent, **variants):
+        defaults = {
+        }
+        defaults.update(variants)
+        super().__init__(parent, **defaults)
+
 class Button(ctk.CTkButton):
     def __init__(self, parent, **variants):
         defaults = {          
@@ -516,7 +523,7 @@ class MidtermPerformanceTracker(Frame):
                     font = ("Impact", 20)
                 ).pack()
                 
-                numerator = ctk.CTkEntry(form)
+                numerator = Entry(form)
                 numerator.pack()
                 
                 Label(
@@ -525,7 +532,7 @@ class MidtermPerformanceTracker(Frame):
                     font = ("Impact", 20)
                 ).pack()
                 
-                denominator = ctk.CTkEntry(form)
+                denominator = Entry(form)
                 denominator.pack()
                 
                 def change_score(numerator, denominator):
@@ -1157,7 +1164,7 @@ class MidtermPerformanceTracker(Frame):
             text = "Course Name",
             font = ("Impact", 20)
         ).pack()
-        course_name = ctk.CTkEntry(form)
+        course_name = Entry(form)
         course_name.pack()
         
         Label(
@@ -1165,7 +1172,7 @@ class MidtermPerformanceTracker(Frame):
             text = "Course ID",
             font = ("Impact", 20)
         ).pack()
-        course_id = ctk.CTkEntry(form)
+        course_id = Entry(form)
         course_id.pack()
         
         Label(
@@ -1177,7 +1184,7 @@ class MidtermPerformanceTracker(Frame):
         input_div = Frame(form)
         input_div.pack()
         
-        final_weightage = ctk.CTkEntry(input_div)
+        final_weightage = Entry(input_div)
         final_weightage.pack(side = "left")
         
         percent_sign = Label(
@@ -1192,7 +1199,7 @@ class MidtermPerformanceTracker(Frame):
             text = "Amount of Assignments",
             font = ("Impact", 20)
         ).pack()
-        num_of_assignments = ctk.CTkEntry(form)
+        num_of_assignments = Entry(form)
         num_of_assignments.pack()
         
         Label(
@@ -1200,7 +1207,7 @@ class MidtermPerformanceTracker(Frame):
             text = "Amount of Coursework Exams",
             font = ("Impact", 20)
         ).pack()
-        num_of_coursework_exams = ctk.CTkEntry(form)
+        num_of_coursework_exams = Entry(form)
         num_of_coursework_exams.pack()
         
         def next_form():
@@ -1241,7 +1248,7 @@ class MidtermPerformanceTracker(Frame):
             form.grab_set()
             form.focus()
             form.attributes("-topmost", True)
-            
+        
         width = 900
         height = 380
             
@@ -1284,7 +1291,7 @@ class MidtermPerformanceTracker(Frame):
             input_div = Frame(scrollable_area)
             input_div.pack()
             
-            weightage = ctk.CTkEntry(input_div)
+            weightage = Entry(input_div)
             weightage.pack(side = "left")
             
             percent_sign = Label(
@@ -1306,7 +1313,7 @@ class MidtermPerformanceTracker(Frame):
             input_div = Frame(scrollable_area)
             input_div.pack()
             
-            weightage = ctk.CTkEntry(input_div)
+            weightage = Entry(input_div)
             weightage.pack(side = "left")
             
             percent_sign = Label(
@@ -1418,7 +1425,7 @@ class MidtermPerformanceTracker(Frame):
             text = "Cancel",
             font = ("Impact", 20),
             command = form.destroy
-        ).pack()  
+        ).pack()              
 
 class GoalTrackerPage(Frame):
     def __init__(self, parent, controller, course, courses):
@@ -1479,7 +1486,7 @@ class GoalTrackerPage(Frame):
             input_div = Frame(form)
             input_div.pack()
             
-            input_field = ctk.CTkEntry(input_div)
+            input_field = Entry(input_div)
             input_field.pack(side = "left")
             
             percent_sign = Label(
@@ -2050,7 +2057,7 @@ class GoalTrackerPage(Frame):
             input_div = Frame(form)
             input_div.pack()
             
-            input_field = ctk.CTkEntry(input_div)
+            input_field = Entry(input_div)
             input_field.pack(side = "left")
             
             percent_sign = Label(
