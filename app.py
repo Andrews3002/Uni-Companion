@@ -258,7 +258,8 @@ class MidtermPerformanceTracker(Frame):
         def open_goal_tracker_page(course):
             page = GoalTrackerPage(
                 parent = self.parent, 
-                course = course, 
+                course = course,
+                courses = self.courses,
                 controller = self.controller
             )
             page.place(
@@ -532,6 +533,10 @@ class MidtermPerformanceTracker(Frame):
                     score = score * assessment["weightage"]
                     assessment["score"] = score
                     assessment["status"] = "GRADED"
+                    
+                    with open("courses.json", "w") as w:
+                        json.dump(self.courses, w, indent=4)
+                    
                     form.destroy()
                     self.refresh_ui()
                     
@@ -554,6 +559,10 @@ class MidtermPerformanceTracker(Frame):
             def reset_score(assessment):
                 assessment["score"] = 0.0
                 assessment["status"] = "WAITING"
+                
+                with open("courses.json", "w") as w:
+                    json.dump(self.courses, w, indent=4)
+                
                 self.refresh_ui()
             
             if selectedCourse and selectedCourse == course:
@@ -1384,21 +1393,26 @@ class MidtermPerformanceTracker(Frame):
         ).pack()  
 
 class GoalTrackerPage(Frame):
-    def __init__(self, parent, controller, course):
+    def __init__(self, parent, controller, course, courses):
         super().__init__(parent)
         self.parent = parent
         self.course = course
         self.controller = controller
+        self.courses = courses
         self.refresh_gui()
         
     def refresh_gui(self):
         for widget in self.winfo_children():
             widget.destroy()
 
+        if os.path.exists("courses.json") and os.path.getsize("courses.json") > 0:     
+            with open("courses.json", "r") as data:
+                self.courses = json.load(data)
+                
+        self.course = self.courses[self.course["id"]]
+
         main_height = self.controller.winfo_height()
         main_width = self.controller.winfo_width()
-        
-        
         
         new_size = int(main_width/4.8)
         new_font_size = int(main_width/96)
@@ -1406,12 +1420,6 @@ class GoalTrackerPage(Frame):
         assessment_size = int(main_width/48)
         
         def edit_goal():
-            def update_goal_value():
-                goal = int(input_field.get())
-                self.course["goal"] = goal/100
-                form.destroy()
-                self.refresh_gui()
-        
             form = TopLevel(self)
             form.title("Edit Goal")
             form.transient(self)
@@ -1453,6 +1461,17 @@ class GoalTrackerPage(Frame):
             )
             percent_sign.pack(side = "left")
             
+            def update_goal_value():
+                goal = int(input_field.get())
+                
+                self.courses[self.course["id"]]["goal"] = goal/100
+                
+                with open("courses.json", "w") as w:
+                    json.dump(self.courses, w, indent=4)
+                
+                form.destroy()
+                self.refresh_gui()
+            
             Button(
                 form,
                 text = "Enter",
@@ -1469,6 +1488,7 @@ class GoalTrackerPage(Frame):
                 command = form.destroy
             ).pack()
             
+        
         navbar_frame = Frame(
             self,
             fg_color = "#242222"
@@ -1581,6 +1601,7 @@ class GoalTrackerPage(Frame):
             relheight = 0.08
         )
         
+        
         goal = self.course["goal"]*100
         score_sum = 0
         goal_remainder = goal
@@ -1588,6 +1609,8 @@ class GoalTrackerPage(Frame):
         total = 100
         weightage_sum = 0
         total_remainder = total
+        
+        potential = 0
         
         required_score_sum = 0
         
@@ -1598,6 +1621,9 @@ class GoalTrackerPage(Frame):
             if assignment["status"] == "GRADED":
                 score_sum += score
                 weightage_sum += weightage
+                potential = potential + score
+            else:
+                potential = potential + weightage
                 
         for coursework_exam in self.course["coursework_exams"].values():
             score = coursework_exam["score"]*100
@@ -1606,7 +1632,12 @@ class GoalTrackerPage(Frame):
             if coursework_exam["status"] == "GRADED":
                 score_sum += score
                 weightage_sum += weightage
-        
+                potential = potential + score 
+            else:
+                potential = potential + weightage
+                
+        potential = potential + (self.course["final_weightage"]*100)
+                
         total_remainder = total - weightage_sum
         goal_remainder = goal - score_sum
         
@@ -1841,7 +1872,8 @@ class GoalTrackerPage(Frame):
                     rely = 0.5,
                     anchor = "center"
                 )
-                
+          
+            
         required_score = round((goal - required_score_sum), 1)
         
         final_frame = Frame(
@@ -1927,8 +1959,80 @@ class GoalTrackerPage(Frame):
             relx = 0.5,
             rely = 0.5,
             anchor = "n"
-        )             
+        )    
+        
+        def madatory_edit_goal():
+            def update_goal_value():
+                goal = int(input_field.get())
+                
+                self.courses[self.course["id"]]["goal"] = goal/100
+                
+                with open("courses.json", "w") as w:
+                    json.dump(self.courses, w, indent=4)
+                
+                form.destroy()
+                self.refresh_gui()
+        
+            form = TopLevel(self)
+            form.title("Edit Goal")
+            form.transient(self)
+            if form.winfo_exists():
+                form.grab_set()
+                form.focus()
+                form.attributes("-topmost", True)
+                
+            width = 700
+            height = 150
+                
+            # Get the screen dimensions
+            screen_width = self.winfo_screenwidth()
+            screen_height = self.winfo_screenheight()
 
+            # Calculate center position
+            x = int((screen_width / 2) - (width / 2))
+            y = int((screen_height / 2) - (height / 2))
+
+            # Set size and position
+            form.geometry(f"{width}x{height}+{x}+{y}")
+            
+            Label(
+                form,
+                text = "Unfortunately, you are unable to achieve your previous goal of " + str(self.course["goal"]*100) + "%",
+                font = ("Impact", 20)
+            ).pack()
+            
+            Label(
+                form,
+                text = "Please Set Your New Goal",
+                font = ("Impact", 20)
+            ).pack()
+            
+            input_div = Frame(form)
+            input_div.pack()
+            
+            input_field = ctk.CTkEntry(input_div)
+            input_field.pack(side = "left")
+            
+            percent_sign = Label(
+                input_div,
+                text = "%",
+                font = ("Impact", 20)
+            )
+            percent_sign.pack(side = "left")
+            
+            Button(
+                form,
+                text = "Enter",
+                font = ("Impact", 20),
+                command = update_goal_value
+            ).pack(
+                pady = 10
+            )
+                     
+
+        if potential < goal:
+            madatory_edit_goal()
+        
 # Tertiary GPA Tracker App
 class TertiaryGPATracker(Frame):
     def __init__(self, parent, controller):
