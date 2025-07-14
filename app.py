@@ -5,17 +5,29 @@ import customtkinter as ctk
 from PIL import Image, ImageTk
 import ctypes
 
-# Windows API constants
+# Windows constants
 GWL_STYLE = -16
 WS_MAXIMIZEBOX = 0x00010000
 WS_THICKFRAME = 0x00040000
 
-def disable_maximize_button(hwnd):
+# Get usable screen size (not covering taskbar)
+def get_work_area():
+    class RECT(ctypes.Structure):
+        _fields_ = [("left", ctypes.c_long),
+                    ("top", ctypes.c_long),
+                    ("right", ctypes.c_long),
+                    ("bottom", ctypes.c_long)]
+    rect = RECT()
+    SPI_GETWORKAREA = 0x0030
+    ctypes.windll.user32.SystemParametersInfoW(SPI_GETWORKAREA, 0, ctypes.byref(rect), 0)
+    return rect.left, rect.top, rect.right, rect.bottom
+
+# Disable maximize and resizing
+def disable_maximize(hwnd):
     style = ctypes.windll.user32.GetWindowLongW(hwnd, GWL_STYLE)
-    style &= ~WS_MAXIMIZEBOX  # Disable maximize button
-    style &= ~WS_THICKFRAME   # Disable resizing via border
+    style &= ~WS_MAXIMIZEBOX
+    style &= ~WS_THICKFRAME
     ctypes.windll.user32.SetWindowLongW(hwnd, GWL_STYLE, style)
-    ctypes.windll.user32.SetWindowPos(hwnd, None, 0, 0, 0, 0, 0x0001 | 0x0002 | 0x0020)
 
 myappid = 'uni-companion.gui.1.0'
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
@@ -62,7 +74,19 @@ class App(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title('Uni Companion')
-        self.state('zoomed')
+        
+        # Get working area size and apply
+        left, top, right, bottom = get_work_area()
+        width = right - left
+        height = bottom - top
+        self.geometry(f"{width}x{height}+{left-8}+{top-3}")
+
+        # Apply style after render
+        def finalize():
+            hwnd = ctypes.windll.user32.GetParent(app.winfo_id())
+            disable_maximize(hwnd)
+
+        self.after(100, finalize)
         
         self.iconbitmap("Logo.ico") 
                         
@@ -96,12 +120,6 @@ class App(ctk.CTk):
             
         self.open_page("HomePage")
         
-        self.update_idletasks()
-
-        hwnd = ctypes.windll.user32.GetParent(self.winfo_id())
-        disable_maximize_button(hwnd)
-
-        self.resizable(False, False)
         
     def open_page(self, page_name):
         page = self.pages[page_name]
