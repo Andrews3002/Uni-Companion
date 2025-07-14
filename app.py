@@ -1400,6 +1400,11 @@ class GoalTrackerPage(Frame):
         main_height = self.controller.winfo_height()
         main_width = self.controller.winfo_width()
         
+        new_size = int(main_width/4.8)
+        new_font_size = int(main_width/96)
+        title_font_size = int(main_width/38.4)
+        assessment_size = int(main_width/48)
+        
         def edit_goal():
             def update_goal_value():
                 goal = int(input_field.get())
@@ -1517,7 +1522,7 @@ class GoalTrackerPage(Frame):
         logo = ctk.CTkImage(
             light_image = Image.open("images/Logo.png"),
             dark_image = Image.open("images/Logo.png"),
-            size = (400, 400)
+            size = (new_size, new_size)
         )
         
         logoFrame_label = Label(
@@ -1533,7 +1538,7 @@ class GoalTrackerPage(Frame):
         Label(
             header_frame,
             text = str(self.course["name"])+" ("+str(self.course["id"])+")",
-            font = ("Impact", 50)
+            font = ("Impact", title_font_size)
         ).place(
             relx = 0.5,
             rely = 0.5,
@@ -1543,7 +1548,7 @@ class GoalTrackerPage(Frame):
         Label(
             header_frame, 
             text = "Your goal is to attain "+str(self.course["goal"]*100)+"%",
-            font = ("Impact", 20)
+            font = ("Impact", new_font_size)
         ).place(
             relx = 0.5,
             rely = 0.5,
@@ -1553,7 +1558,7 @@ class GoalTrackerPage(Frame):
         Button(
             navButtons_frame, 
             text = "EDIT GOAL",
-            font = ("Impact", 20),
+            font = ("Impact", new_font_size),
             command = edit_goal
         ).place(
             relx = 0.5,
@@ -1566,7 +1571,7 @@ class GoalTrackerPage(Frame):
         Button(
             navButtons_frame, 
             text = "BACK",
-            font = ("Impact", 20),
+            font = ("Impact", new_font_size),
             command = lambda:self.controller.open_page("MidtermPerformanceTracker")
         ).place(
             relx = 0.5,
@@ -1671,7 +1676,7 @@ class GoalTrackerPage(Frame):
                 Label(
                     assessmentHeader_frame, 
                     text = assignment["name"],
-                    font = ("Impact", 40)
+                    font = ("Impact", assessment_size)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
@@ -1681,7 +1686,7 @@ class GoalTrackerPage(Frame):
                 Label(
                     assessmentContent_frame, 
                     text = "You need to get at least",
-                    font = ("Impact", 20)
+                    font = ("Impact", new_font_size)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
@@ -1691,7 +1696,7 @@ class GoalTrackerPage(Frame):
                 Label(
                     assessmentContent_frame, 
                     text = str(required_score)+"/"+str(weightage),
-                    font = ("Impact", 20)
+                    font = ("Impact", new_font_size)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
@@ -1704,7 +1709,7 @@ class GoalTrackerPage(Frame):
                 Label(
                     assessmentHeader_frame, 
                     text = assignment["name"],
-                    font = ("Impact", 40)
+                    font = ("Impact", assessment_size)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
@@ -1714,7 +1719,7 @@ class GoalTrackerPage(Frame):
                 Label(
                     assessmentContent_frame, 
                     text = "GRADED",
-                    font = ("Impact", 20)
+                    font = ("Impact", new_font_size)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
@@ -1787,7 +1792,7 @@ class GoalTrackerPage(Frame):
                 Label(
                     assessmentHeader_frame, 
                     text = coursework_exam["name"],
-                    font = ("Impact", 40)
+                    font = ("Impact", assessment_size)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
@@ -1797,7 +1802,7 @@ class GoalTrackerPage(Frame):
                 Label(
                     assessmentContent_frame, 
                     text = "You need to get at least",
-                    font = ("Impact", 20)
+                    font = ("Impact", new_font_size)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
@@ -1807,7 +1812,7 @@ class GoalTrackerPage(Frame):
                 Label(
                     assessmentContent_frame, 
                     text = str(required_score)+"/"+str(weightage),
-                    font = ("Impact", 20)
+                    font = ("Impact", new_font_size)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
@@ -1820,7 +1825,7 @@ class GoalTrackerPage(Frame):
                 Label(
                     assessmentHeader_frame, 
                     text = coursework_exam["name"],
-                    font = ("Impact", 40)
+                    font = ("Impact", assessment_size)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
@@ -1830,7 +1835,7 @@ class GoalTrackerPage(Frame):
                 Label(
                     assessmentContent_frame, 
                     text = "GRADED",
-                    font = ("Impact", 20)
+                    font = ("Impact", new_font_size)
                 ).place(
                     relx = 0.5,
                     rely = 0.5,
@@ -1897,7 +1902,7 @@ class GoalTrackerPage(Frame):
         Label(
             finalHeader_frame, 
             text = "Final Exam",
-            font = ("Impact", 40)
+            font = ("Impact", assessment_size)
         ).place(
             relx = 0.5,
             rely = 0.5,
@@ -1907,7 +1912,7 @@ class GoalTrackerPage(Frame):
         Label(
             finalContent_frame, 
             text = "You need to get at least",
-            font = ("Impact", 20)
+            font = ("Impact", new_font_size)
         ).place(
             relx = 0.5,
             rely = 0.5,
@@ -1917,7 +1922,7 @@ class GoalTrackerPage(Frame):
         Label(
             finalContent_frame, 
             text = str(required_score)+"/"+str(self.course["final_weightage"]*100),
-            font = ("Impact", 20)
+            font = ("Impact", new_font_size)
         ).place(
             relx = 0.5,
             rely = 0.5,
