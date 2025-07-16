@@ -544,7 +544,7 @@ class MidtermPerformanceTracker(Frame):
                     with open("assets/courses.json", "w") as w:
                         json.dump(self.courses, w, indent=4)
                     
-                    form.destroy()
+                    form.after(100, form.destroy)
                     self.refresh_ui()
                     
                 Button(
@@ -1139,10 +1139,13 @@ class MidtermPerformanceTracker(Frame):
         form = TopLevel(self)
         form.title("Course Information")
         form.transient(self)
-        if form.winfo_exists():
-            form.grab_set()
-            form.focus()
+        try:
+            if form.winfo_exists():
+                form.focus_set()
+            form.after(100, lambda: form.focus())
             form.attributes("-topmost", True)
+        except:
+            pass
                         
         width = 400
         height = 380
@@ -1213,7 +1216,7 @@ class MidtermPerformanceTracker(Frame):
         def next_form():
             if float(final_weightage.get()) > 1:
                 final_weightage_accurate_float_value = float(final_weightage.get()) / 100
-                
+
             self.create_course_form_part2(
                 str(course_name.get()), 
                 str(course_id.get()), 
@@ -1221,7 +1224,9 @@ class MidtermPerformanceTracker(Frame):
                 int(num_of_assignments.get()), 
                 int(num_of_coursework_exams.get())
             )
-            form.destroy()
+            
+            # Defer destroying the current form to let internal focus callbacks finish
+            form.after(100, form.destroy)
         
         Button(
             form, 
@@ -1244,10 +1249,13 @@ class MidtermPerformanceTracker(Frame):
         form = TopLevel(self)
         form.title("Course Information")
         form.transient(self)
-        if form.winfo_exists():
-            form.grab_set()
-            form.focus()
+        try:
+            if form.winfo_exists():
+                form.focus_set()
+            form.after(100, lambda: form.focus())
             form.attributes("-topmost", True)
+        except:
+            pass
         
         width = 900
         height = 380
@@ -1405,7 +1413,7 @@ class MidtermPerformanceTracker(Frame):
             with open("assets/courses.json", "w") as w:
                 json.dump(self.courses, w, indent=4)
             
-            form.destroy()
+            form.after(100, form.destroy)
             
             #updating the main page to always have an up to date list of courses after adding new courses
             self.refresh_ui()
@@ -1504,7 +1512,7 @@ class GoalTrackerPage(Frame):
                 with open("assets/courses.json", "w") as w:
                     json.dump(self.courses, w, indent=4)
                 
-                form.destroy()
+                form.after(100, form.destroy)
                 self.refresh_gui()
             
             Button(
@@ -2017,7 +2025,7 @@ class GoalTrackerPage(Frame):
                 with open("assets/courses.json", "w") as w:
                     json.dump(self.courses, w, indent=4)
                 
-                form.destroy()
+                form.after(100, form.destroy)
                 self.refresh_gui()
         
             form = TopLevel(self)
