@@ -1,3 +1,6 @@
 build
 dist
 app.spec
+
+exe command:
+>pyinstaller --onefile --noconsole --icon Logo.ico app.py

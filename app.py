@@ -88,11 +88,11 @@ class App(ctk.CTk):
         self.geometry(f"{width}x{height}+{left-8}+{top-3}")
 
         # Apply style after render
-        def finalize():
-            hwnd = ctypes.windll.user32.GetParent(app.winfo_id())
-            disable_maximize(hwnd)
+        # def finalize():
+        #     hwnd = ctypes.windll.user32.GetParent(app.winfo_id())
+        #     disable_maximize(hwnd)
 
-        self.after(100, finalize)
+        # self.after(100, finalize)
         
         self.iconbitmap("assets/images/Logo.ico") 
                         
@@ -377,7 +377,7 @@ class MidtermPerformanceTracker(Frame):
         def confirm_remove_course(course):
             form = TopLevel(self)
             form.title("Remove Course")
-            form.transient(self)
+            form.transient()
             if form.winfo_exists():
                 form.grab_set()
                 form.focus()
@@ -497,7 +497,7 @@ class MidtermPerformanceTracker(Frame):
             def update_score(assessment):                    
                 form = TopLevel(self)
                 form.title("Update Score")
-                form.transient(self)
+                form.transient()
                 if form.winfo_exists():
                     form.grab_set()
                     form.focus()
@@ -1138,7 +1138,7 @@ class MidtermPerformanceTracker(Frame):
         #creating the CTkFrame form to enter the data for the new course
         form = TopLevel(self)
         form.title("Course Information")
-        form.transient(self)
+        form.transient()
         try:
             if form.winfo_exists():
                 form.focus_set()
@@ -1248,7 +1248,7 @@ class MidtermPerformanceTracker(Frame):
         #creating the form to enter the values and store them in variables
         form = TopLevel(self)
         form.title("Course Information")
-        form.transient(self)
+        form.transient()
         try:
             if form.winfo_exists():
                 form.focus_set()
@@ -1488,7 +1488,7 @@ class GoalTrackerPage(Frame):
         def edit_goal():
             form = TopLevel(self)
             form.title("Edit Goal")
-            form.transient(self)
+            form.transient()
             if form.winfo_exists():
                 form.grab_set()
                 form.focus()
@@ -2053,7 +2053,7 @@ class GoalTrackerPage(Frame):
         
             form = TopLevel(self)
             form.title("Edit Goal")
-            form.transient(self)
+            form.transient()
             if form.winfo_exists():
                 form.grab_set()
                 form.focus()
