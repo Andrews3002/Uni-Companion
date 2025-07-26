@@ -1289,21 +1289,28 @@ class MidtermPerformanceTracker(Frame):
         assignment_weightages = []
         coursework_exam_weightages = []
         
+        assessmentFormHeading = Label(
+            scrollable_area,
+            text = "Enter the percentage for each assessment",
+            font = ("Impact", 25)
+        )
+        assessmentFormHeading.pack(pady = 5)
+        
         for i in range(1, num_of_assignments+1):
+            assessmentFrame = Frame(scrollable_area)
+            assessmentFrame.pack(pady = 5)
+            
             Label(
-                scrollable_area, 
-                text = "How much percent of your final grade is Assignment "+ str(i) +" worth?",
+                assessmentFrame, 
+                text = "Assignment "+ str(i) +":             ",
                 font = ("Impact", 20)
-            ).pack()
+            ).pack(side = "left")
             
-            input_div = Frame(scrollable_area)
-            input_div.pack()
-            
-            weightage = Entry(input_div)
+            weightage = Entry(assessmentFrame)
             weightage.pack(side = "left")
             
             percent_sign = Label(
-                input_div,
+                assessmentFrame,
                 text = "%",
                 font = ("Impact", 20)
             )
@@ -1312,26 +1319,42 @@ class MidtermPerformanceTracker(Frame):
             assignment_weightages.append(weightage)
         
         for i in range(1, num_of_coursework_exams+1):
+            assessmentFrame = Frame(scrollable_area)
+            assessmentFrame.pack(pady = 5)
+            
             Label(
-                scrollable_area, 
-                text = "How much percent of your final grade is Coursework Exam "+ str(i) +" worth?",
+                assessmentFrame, 
+                text = "Coursework Exam "+ str(i) +": ",
                 font = ("Impact", 20)
-            ).pack()
+            ).pack(side = "left")
             
-            input_div = Frame(scrollable_area)
-            input_div.pack()
-            
-            weightage = Entry(input_div)
+            weightage = Entry(assessmentFrame)
             weightage.pack(side = "left")
             
             percent_sign = Label(
-                input_div,
+                assessmentFrame,
                 text = "%",
                 font = ("Impact", 20)
             )
             percent_sign.pack(side = "left")
             
             coursework_exam_weightages.append(weightage) 
+            
+        assessmentFrame = Frame(scrollable_area)
+        assessmentFrame.pack(pady = 5)
+        
+        Label(
+            assessmentFrame, 
+            text = "Final Exam:                                             ",
+            font = ("Impact", 20)
+        ).pack(side = "left")
+        
+        percent_sign = Label(
+            assessmentFrame,
+            text = str(final_weightage*100)+ "%",
+            font = ("Impact", 20)
+        )
+        percent_sign.pack(side = "left")
         
         
         #populating all the assignments and coursework exams of the created course with their relevant weightage values 
